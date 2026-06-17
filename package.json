@@ -1,0 +1,33 @@
+{
+  "name": "wedding-runner-invitation",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "import:characters": "node tools/import-character-sheets.mjs",
+    "import:objects": "node tools/import-object-sheets.mjs",
+    "prepare-assets": "node tools/prepare-game-assets.mjs",
+    "audit:assets": "node tools/audit-game-assets.mjs",
+    "visual:audit": "node tools/visual-audit.mjs",
+    "smoke:playthrough": "node tools/smoke-playthrough.mjs",
+    "smoke:kaya": "node tools/smoke-kaya.mjs",
+    "zip:project": "find dist -type d \\( -name '* 2' -o -name '* 3' \\) -prune -exec rm -rf {} + && rm -f wedding-project.zip && zip -rq wedding-project.zip . -x './node_modules/*' './.venv/*' './.git/*' './wedding-project/*' './.DS_Store' '*/.DS_Store' './tsconfig.tsbuildinfo' './wedding-project.zip' './wedding-project-lean.zip'",
+    "zip:lean": "find dist -type d \\( -name '* 2' -o -name '* 3' \\) -prune -exec rm -rf {} + && rm -f wedding-project-lean.zip && zip -rq wedding-project-lean.zip . -x './node_modules/*' './.venv/*' './.git/*' './wedding-project/*' './.DS_Store' '*/.DS_Store' './tsconfig.tsbuildinfo' './wedding-project.zip' './wedding-project-lean.zip' './asset-pack/runtime-sources/raw/*' './asset-pack/runtime-sources/sprites/*' './asset-pack/v3_raw/*' './docs/visual-audit/screenshots/*' './docs/visual-audit/smoke/*' './docs/visual-audit/smoke-kaya/*'",
+    "dev": "vite --host 0.0.0.0",
+    "prebuild": "find public -name '.DS_Store' -delete",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview --host 0.0.0.0"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "^6.0.2",
+    "phaser": "^3.90.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "vite": "^8.0.16"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "typescript": "^5.6.3"
+  }
+}

@@ -1,0 +1,175 @@
+{
+  "target": "asset",
+  "mode": "idle",
+  "prompt": "",
+  "role": "",
+  "input": "public/assets/raw/wedding_characters_raw.png",
+  "threshold": 100,
+  "edge_threshold": 150,
+  "duration": 200,
+  "rows": 2,
+  "cols": 2,
+  "cell_size": 160,
+  "fit_scale": 0.88,
+  "trim_border": 4,
+  "edge_clean_depth": 3,
+  "align": "feet",
+  "shared_scale": true,
+  "component_mode": "largest",
+  "component_padding": 0,
+  "min_component_area": 1,
+  "edge_touch_margin": 0,
+  "frame_labels": [
+    "wedding-character-1",
+    "wedding-character-2",
+    "wedding-character-3",
+    "wedding-character-4"
+  ],
+  "frames": [
+    {
+      "grid": [
+        0,
+        0
+      ],
+      "source_box": [
+        0,
+        0,
+        768,
+        512
+      ],
+      "component_mode": "largest",
+      "component_count": 2,
+      "selected_component_area": 35961,
+      "selected_component_bbox": [
+        448,
+        82,
+        581,
+        448
+      ],
+      "crop_bbox": [
+        448,
+        82,
+        581,
+        448
+      ],
+      "edge_touch": false,
+      "output_size": [
+        50,
+        138
+      ],
+      "paste_position": [
+        55,
+        13
+      ]
+    },
+    {
+      "grid": [
+        0,
+        1
+      ],
+      "source_box": [
+        768,
+        0,
+        1536,
+        512
+      ],
+      "component_mode": "largest",
+      "component_count": 1,
+      "selected_component_area": 35919,
+      "selected_component_bbox": [
+        129,
+        83,
+        267,
+        448
+      ],
+      "crop_bbox": [
+        129,
+        83,
+        267,
+        448
+      ],
+      "edge_touch": false,
+      "output_size": [
+        52,
+        138
+      ],
+      "paste_position": [
+        54,
+        13
+      ]
+    },
+    {
+      "grid": [
+        1,
+        0
+      ],
+      "source_box": [
+        0,
+        512,
+        768,
+        1024
+      ],
+      "component_mode": "largest",
+      "component_count": 1,
+      "selected_component_area": 45882,
+      "selected_component_bbox": [
+        388,
+        41,
+        592,
+        412
+      ],
+      "crop_bbox": [
+        388,
+        41,
+        592,
+        412
+      ],
+      "edge_touch": false,
+      "output_size": [
+        77,
+        140
+      ],
+      "paste_position": [
+        41,
+        11
+      ]
+    },
+    {
+      "grid": [
+        1,
+        1
+      ],
+      "source_box": [
+        768,
+        512,
+        1536,
+        1024
+      ],
+      "component_mode": "largest",
+      "component_count": 1,
+      "selected_component_area": 48273,
+      "selected_component_bbox": [
+        96,
+        43,
+        316,
+        414
+      ],
+      "crop_bbox": [
+        96,
+        43,
+        316,
+        414
+      ],
+      "edge_touch": false,
+      "output_size": [
+        83,
+        140
+      ],
+      "paste_position": [
+        38,
+        11
+      ]
+    }
+  ],
+  "edge_touch_frames": []
+}

@@ -1,0 +1,246 @@
+{
+  "generatedAt": "2026-06-16T22:42:02.119Z",
+  "count": 81,
+  "flagged": [
+    {
+      "file": "public/assets/game/props/obstacle-puddle.png",
+      "size": [
+        727,
+        423
+      ],
+      "margins": {
+        "left": 18,
+        "top": 18,
+        "right": 18,
+        "bottom": 18
+      },
+      "edgeOpaque": 0,
+      "whiteFringe": 5,
+      "semiTransparent": 7816
+    },
+    {
+      "file": "public/assets/game/props/obstacle-rain-cloud.png",
+      "size": [
+        687,
+        664
+      ],
+      "margins": {
+        "left": 18,
+        "top": 18,
+        "right": 18,
+        "bottom": 18
+      },
+      "edgeOpaque": 0,
+      "whiteFringe": 3,
+      "semiTransparent": 5593
+    },
+    {
+      "file": "public/assets/game/v3/decor/flowers-small.png",
+      "size": [
+        163,
+        145
+      ],
+      "margins": {
+        "left": 18,
+        "top": 18,
+        "right": 18,
+        "bottom": 18
+      },
+      "edgeOpaque": 0,
+      "whiteFringe": 2,
+      "semiTransparent": 0
+    },
+    {
+      "file": "public/assets/game/v3/furniture/candle.png",
+      "size": [
+        90,
+        124
+      ],
+      "margins": {
+        "left": 18,
+        "top": 18,
+        "right": 18,
+        "bottom": 18
+      },
+      "edgeOpaque": 0,
+      "whiteFringe": 1,
+      "semiTransparent": 0
+    },
+    {
+      "file": "public/assets/game/v3/furniture/sconce.png",
+      "size": [
+        130,
+        160
+      ],
+      "margins": {
+        "left": 18,
+        "top": 18,
+        "right": 18,
+        "bottom": 18
+      },
+      "edgeOpaque": 0,
+      "whiteFringe": 1,
+      "semiTransparent": 0
+    },
+    {
+      "file": "public/assets/game/v3/fx/heart-2.png",
+      "size": [
+        146,
+        112
+      ],
+      "margins": {
+        "left": 8,
+        "top": 8,
+        "right": 8,
+        "bottom": 8
+      },
+      "edgeOpaque": 0,
+      "whiteFringe": 4,
+      "semiTransparent": 0
+    },
+    {
+      "file": "public/assets/game/v3/fx/heart-3.png",
+      "size": [
+        110,
+        121
+      ],
+      "margins": {
+        "left": 8,
+        "top": 8,
+        "right": 8,
+        "bottom": 8
+      },
+      "edgeOpaque": 0,
+      "whiteFringe": 4,
+      "semiTransparent": 0
+    },
+    {
+      "file": "public/assets/game/v3/fx/sparkle-2.png",
+      "size": [
+        193,
+        177
+      ],
+      "margins": {
+        "left": 8,
+        "top": 8,
+        "right": 8,
+        "bottom": 8
+      },
+      "edgeOpaque": 0,
+      "whiteFringe": 13,
+      "semiTransparent": 0
+    },
+    {
+      "file": "public/assets/game/v3/fx/sparkle-3.png",
+      "size": [
+        160,
+        128
+      ],
+      "margins": {
+        "left": 8,
+        "top": 8,
+        "right": 8,
+        "bottom": 8
+      },
+      "edgeOpaque": 0,
+      "whiteFringe": 10,
+      "semiTransparent": 0
+    },
+    {
+      "file": "public/assets/game/v3/fx/sparkle-4.png",
+      "size": [
+        147,
+        128
+      ],
+      "margins": {
+        "left": 8,
+        "top": 8,
+        "right": 8,
+        "bottom": 8
+      },
+      "edgeOpaque": 0,
+      "whiteFringe": 48,
+      "semiTransparent": 0
+    },
+    {
+      "file": "public/assets/game/v3/obstacles/can.png",
+      "size": [
+        195,
+        100
+      ],
+      "margins": {
+        "left": 18,
+        "top": 18,
+        "right": 18,
+        "bottom": 18
+      },
+      "edgeOpaque": 0,
+      "whiteFringe": 1,
+      "semiTransparent": 0
+    },
+    {
+      "file": "public/assets/game/v3/obstacles/puddle-small.png",
+      "size": [
+        229,
+        92
+      ],
+      "margins": {
+        "left": 18,
+        "top": 18,
+        "right": 18,
+        "bottom": 18
+      },
+      "edgeOpaque": 0,
+      "whiteFringe": 1,
+      "semiTransparent": 0
+    },
+    {
+      "file": "public/assets/game/v3/obstacles/puddle.png",
+      "size": [
+        727,
+        423
+      ],
+      "margins": {
+        "left": 18,
+        "top": 18,
+        "right": 18,
+        "bottom": 18
+      },
+      "edgeOpaque": 0,
+      "whiteFringe": 5,
+      "semiTransparent": 7816
+    },
+    {
+      "file": "public/assets/game/v3/obstacles/rain-cloud.png",
+      "size": [
+        687,
+        664
+      ],
+      "margins": {
+        "left": 18,
+        "top": 18,
+        "right": 18,
+        "bottom": 18
+      },
+      "edgeOpaque": 0,
+      "whiteFringe": 3,
+      "semiTransparent": 5593
+    },
+    {
+      "file": "public/assets/game/v3/obstacles/splash.png",
+      "size": [
+        727,
+        423
+      ],
+      "margins": {
+        "left": 18,
+        "top": 18,
+        "right": 18,
+        "bottom": 18
+      },
+      "edgeOpaque": 0,
+      "whiteFringe": 5,
+      "semiTransparent": 7816
+    }
+  ]
+}

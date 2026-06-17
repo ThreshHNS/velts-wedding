@@ -1,0 +1,138 @@
+{
+  "target": "asset",
+  "mode": "single",
+  "prompt": "",
+  "role": "",
+  "input": "public/assets/raw/kaya_raw.png",
+  "threshold": 100,
+  "edge_threshold": 150,
+  "duration": 200,
+  "rows": 1,
+  "cols": 3,
+  "cell_size": 96,
+  "fit_scale": 0.9,
+  "trim_border": 4,
+  "edge_clean_depth": 3,
+  "align": "bottom",
+  "shared_scale": true,
+  "component_mode": "largest",
+  "component_padding": 0,
+  "min_component_area": 1,
+  "edge_touch_margin": 0,
+  "frame_labels": [
+    "kaya-1",
+    "kaya-2",
+    "kaya-3"
+  ],
+  "frames": [
+    {
+      "grid": [
+        0,
+        0
+      ],
+      "source_box": [
+        0,
+        0,
+        724,
+        724
+      ],
+      "component_mode": "largest",
+      "component_count": 1,
+      "selected_component_area": 71701,
+      "selected_component_bbox": [
+        256,
+        178,
+        547,
+        571
+      ],
+      "crop_bbox": [
+        256,
+        178,
+        547,
+        571
+      ],
+      "edge_touch": false,
+      "output_size": [
+        60,
+        81
+      ],
+      "paste_position": [
+        18,
+        11
+      ]
+    },
+    {
+      "grid": [
+        0,
+        1
+      ],
+      "source_box": [
+        724,
+        0,
+        1448,
+        724
+      ],
+      "component_mode": "largest",
+      "component_count": 1,
+      "selected_component_area": 46569,
+      "selected_component_bbox": [
+        212,
+        153,
+        436,
+        570
+      ],
+      "crop_bbox": [
+        212,
+        153,
+        436,
+        570
+      ],
+      "edge_touch": false,
+      "output_size": [
+        46,
+        86
+      ],
+      "paste_position": [
+        25,
+        6
+      ]
+    },
+    {
+      "grid": [
+        0,
+        2
+      ],
+      "source_box": [
+        1448,
+        0,
+        2172,
+        724
+      ],
+      "component_mode": "largest",
+      "component_count": 1,
+      "selected_component_area": 92726,
+      "selected_component_bbox": [
+        29,
+        196,
+        433,
+        571
+      ],
+      "crop_bbox": [
+        29,
+        196,
+        433,
+        571
+      ],
+      "edge_touch": false,
+      "output_size": [
+        83,
+        77
+      ],
+      "paste_position": [
+        6,
+        15
+      ]
+    }
+  ],
+  "edge_touch_frames": []
+}

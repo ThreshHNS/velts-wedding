@@ -1,0 +1,182 @@
+[
+  {
+    "file": "reference_slices/00_full_concept_reference.png",
+    "box": [
+      0,
+      0,
+      1024,
+      1536
+    ],
+    "note": "reference crop from generated concept; contains baked-in text, use as style/layout reference only"
+  },
+  {
+    "file": "reference_slices/01_hero_playable_scene_reference.png",
+    "box": [
+      0,
+      0,
+      1024,
+      482
+    ],
+    "note": "reference crop from generated concept; contains baked-in text, use as style/layout reference only"
+  },
+  {
+    "file": "reference_slices/02_hud_top_reference.png",
+    "box": [
+      455,
+      23,
+      995,
+      88
+    ],
+    "note": "reference crop from generated concept; contains baked-in text, use as style/layout reference only"
+  },
+  {
+    "file": "reference_slices/03_start_prompt_reference.png",
+    "box": [
+      333,
+      143,
+      605,
+      239
+    ],
+    "note": "reference crop from generated concept; contains baked-in text, use as style/layout reference only"
+  },
+  {
+    "file": "reference_slices/04_level_1_gather_row_reference.png",
+    "box": [
+      0,
+      482,
+      1024,
+      698
+    ],
+    "note": "reference crop from generated concept; contains baked-in text, use as style/layout reference only"
+  },
+  {
+    "file": "reference_slices/05_level_1_stage_reference.png",
+    "box": [
+      221,
+      486,
+      748,
+      696
+    ],
+    "note": "reference crop from generated concept; contains baked-in text, use as style/layout reference only"
+  },
+  {
+    "file": "reference_slices/06_level_1_info_card_reference.png",
+    "box": [
+      748,
+      490,
+      1014,
+      689
+    ],
+    "note": "reference crop from generated concept; contains baked-in text, use as style/layout reference only"
+  },
+  {
+    "file": "reference_slices/07_level_2_not_late_row_reference.png",
+    "box": [
+      0,
+      698,
+      1024,
+      891
+    ],
+    "note": "reference crop from generated concept; contains baked-in text, use as style/layout reference only"
+  },
+  {
+    "file": "reference_slices/08_level_2_stage_reference.png",
+    "box": [
+      221,
+      700,
+      748,
+      888
+    ],
+    "note": "reference crop from generated concept; contains baked-in text, use as style/layout reference only"
+  },
+  {
+    "file": "reference_slices/09_level_2_info_card_reference.png",
+    "box": [
+      748,
+      704,
+      1014,
+      883
+    ],
+    "note": "reference crop from generated concept; contains baked-in text, use as style/layout reference only"
+  },
+  {
+    "file": "reference_slices/10_level_3_location_row_reference.png",
+    "box": [
+      0,
+      891,
+      1024,
+      1084
+    ],
+    "note": "reference crop from generated concept; contains baked-in text, use as style/layout reference only"
+  },
+  {
+    "file": "reference_slices/11_level_3_stage_reference.png",
+    "box": [
+      221,
+      895,
+      748,
+      1079
+    ],
+    "note": "reference crop from generated concept; contains baked-in text, use as style/layout reference only"
+  },
+  {
+    "file": "reference_slices/12_level_3_info_card_reference.png",
+    "box": [
+      748,
+      899,
+      1014,
+      1075
+    ],
+    "note": "reference crop from generated concept; contains baked-in text, use as style/layout reference only"
+  },
+  {
+    "file": "reference_slices/13_final_scene_reference.png",
+    "box": [
+      0,
+      1084,
+      1024,
+      1327
+    ],
+    "note": "reference crop from generated concept; contains baked-in text, use as style/layout reference only"
+  },
+  {
+    "file": "reference_slices/14_final_buttons_reference.png",
+    "box": [
+      692,
+      1107,
+      1007,
+      1297
+    ],
+    "note": "reference crop from generated concept; contains baked-in text, use as style/layout reference only"
+  },
+  {
+    "file": "reference_slices/15_bottom_info_cards_reference.png",
+    "box": [
+      0,
+      1327,
+      1024,
+      1536
+    ],
+    "note": "reference crop from generated concept; contains baked-in text, use as style/layout reference only"
+  },
+  {
+    "file": "reference_slices/16_dress_code_card_reference.png",
+    "box": [
+      357,
+      1329,
+      642,
+      1503
+    ],
+    "note": "reference crop from generated concept; contains baked-in text, use as style/layout reference only"
+  },
+  {
+    "file": "reference_slices/17_rsvp_card_reference.png",
+    "box": [
+      654,
+      1329,
+      981,
+      1503
+    ],
+    "note": "reference crop from generated concept; contains baked-in text, use as style/layout reference only"
+  }
+]

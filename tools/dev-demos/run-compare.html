@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Бег: текущая vs обновлённая анимация</title>
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; font-family: system-ui, -apple-system, sans-serif;
+    background: #0e0e12; color: #e8e8ee; padding: 24px;
+  }
+  h1 { font-size: 18px; font-weight: 600; margin: 0 0 4px; }
+  .sub { color: #9a9aa6; font-size: 13px; margin: 0 0 20px; }
+  .stage { display: flex; gap: 24px; flex-wrap: wrap; }
+  .col {
+    background: #16161d; border: 1px solid #26262f; border-radius: 12px;
+    padding: 16px; flex: 1 1 320px; min-width: 300px;
+  }
+  .col h2 { font-size: 14px; margin: 0 0 12px; display: flex; align-items: center; gap: 8px; }
+  .tag { font-size: 11px; padding: 2px 8px; border-radius: 999px; }
+  .tag.cur { background: #3a2a14; color: #f0b46a; }
+  .tag.new { background: #14302a; color: #6ad8b0; }
+  .view {
+    height: 320px; display: flex; align-items: flex-end; justify-content: center;
+    background:
+      radial-gradient(circle at 50% 45%, #2a2a33 0%, #0c0c10 70%);
+    border-radius: 8px; overflow: hidden; position: relative;
+  }
+  canvas { image-rendering: pixelated; image-rendering: crisp-edges; }
+  .strip { display: flex; gap: 6px; margin-top: 12px; flex-wrap: wrap; }
+  .strip canvas { background: #0c0c10; border: 1px solid #26262f; border-radius: 4px; }
+  .strip .lbl { font-size: 10px; color: #777; text-align: center; }
+  .frameInfo { position: absolute; top: 8px; left: 10px; font-size: 11px; color: #888; }
+  .controls {
+    margin-top: 20px; display: flex; gap: 16px; align-items: center; flex-wrap: wrap;
+    background: #16161d; border: 1px solid #26262f; border-radius: 12px; padding: 14px 16px;
+  }
+  .controls label { font-size: 13px; display: flex; align-items: center; gap: 8px; }
+  button {
+    background: #2a2a35; color: #e8e8ee; border: 1px solid #3a3a48;
+    border-radius: 8px; padding: 7px 14px; font-size: 13px; cursor: pointer;
+  }
+  button:hover { background: #343442; }
+  input[type=range] { width: 160px; }
+  .note { font-size: 12px; color: #8a8a96; margin-top: 16px; line-height: 1.5; max-width: 760px; }
+  .swap { display: flex; gap: 4px; flex-wrap: wrap; align-items: center; }
+  .swap button { padding: 4px 8px; font-size: 12px; }
+</style>
+</head>
+<body>
+  <h1>Сравнение анимации бега жениха</h1>
+  <p class="sub">Слева — текущие 4 кадра в игре. Справа — обновлённые позы из присланных спрайтов. Обе крутятся синхронно.</p>
+
+  <div class="stage">
+    <div class="col">
+      <h2><span class="tag cur">ТЕКУЩАЯ</span> 4 кадра</h2>
+      <div class="view"><span class="frameInfo" id="curInfo"></span><canvas id="curMain" width="186" height="255"></canvas></div>
+      <div class="strip" id="curStrip"></div>
+    </div>
+    <div class="col">
+      <h2><span class="tag new">ОБНОВЛЁННАЯ</span> <span id="newCount"></span></h2>
+      <div class="view"><span class="frameInfo" id="newInfo"></span><canvas id="newMain" width="186" height="255"></canvas></div>
+      <div class="strip" id="newStrip"></div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button id="playBtn">⏸ Пауза</button>
+    <label>FPS: <input type="range" id="fps" min="3" max="20" value="11"><span id="fpsVal">11</span></label>
+    <label><input type="checkbox" id="onion"> Onion-skin (тень пред. кадра)</label>
+    <label class="swap">Порядок новых: <span id="orderCtl"></span></label>
+  </div>
+
+  <p class="note">
+    Новые спрайты пришли парами на одном холсте (1536×1024), скрипт режет каждую пополам.
+    pair-1 и pair-2 идентичны, поэтому уникальных новых поз — 4.
+    Кнопки «Порядок новых» позволяют переставить кадры цикла, чтобы найти самую плавную последовательность.
+    В игре частота бега сейчас <b>frameRate: 11</b>.
+  </p>
+
+<script>
+const SCALE = 1.15;
+const CUR = [
+  '/assets/game/characters/groom-run-1.png',
+  '/assets/game/characters/groom-run-2.png',
+  '/assets/game/characters/groom-run-3.png',
+  '/assets/game/characters/groom-run-4.png',
+];
+// pair file + which half (0=left,1=right)
+const NEW_SRC = [
+  ['/assets/game/characters/run-new/pair-1.png', 0],
+  ['/assets/game/characters/run-new/pair-1.png', 1],
+  ['/assets/game/characters/run-new/pair-3.png', 0],
+  ['/assets/game/characters/run-new/pair-3.png', 1],
+];
+
+function load(src){return new Promise(r=>{const i=new Image();i.onload=()=>r(i);i.src=src;});}
+
+// Tight-crop an image's opaque/non-black content into an offscreen canvas of given height.
+function cropToCanvas(img, sx, sw, treatBlackAsBg){
+  const c = document.createElement('canvas');
+  c.width = sw; c.height = img.height;
+  const ctx = c.getContext('2d');
+  ctx.drawImage(img, sx, 0, sw, img.height, 0, 0, sw, img.height);
+  const d = ctx.getImageData(0,0,sw,img.height).data;
+  let minX=sw, minY=img.height, maxX=0, maxY=0, found=false;
+  for(let y=0;y<img.height;y++){
+    for(let x=0;x<sw;x++){
+      const i=(y*sw+x)*4;
+      const a=d[i+3];
+      const lum=d[i]+d[i+1]+d[i+2];
+      const on = treatBlackAsBg ? (a>40 && lum>60) : (a>20);
+      if(on){found=true;if(x<minX)minX=x;if(x>maxX)maxX=x;if(y<minY)minY=y;if(y>maxY)maxY=y;}
+    }
+  }
+  if(!found){minX=0;minY=0;maxX=sw-1;maxY=img.height-1;}
+  const w=maxX-minX+1, h=maxY-minY+1;
+  const out=document.createElement('canvas');
+  out.width=w; out.height=h;
+  out.getContext('2d').drawImage(c, minX, minY, w, h, 0, 0, w, h);
+  return out;
+}
+
+let curFrames=[], newFrames=[], order=[0,1,2,3];
+let playing=true, fps=11, frame=0, last=0, onion=false;
+
+const curMain=document.getElementById('curMain'), newMain=document.getElementById('newMain');
+const cmx=curMain.getContext('2d'), nmx=newMain.getContext('2d');
+
+function drawCell(ctx, canv, frames, idx){
+  ctx.clearRect(0,0,canv.width,canv.height);
+  if(!frames.length) return;
+  const f = frames[idx % frames.length];
+  if(onion){
+    const p = frames[(idx-1+frames.length)%frames.length];
+    ctx.globalAlpha=0.25; fit(ctx,canv,p); ctx.globalAlpha=1;
+  }
+  fit(ctx,canv,f);
+}
+function fit(ctx,canv,img){
+  const s=Math.min(canv.width/img.width, canv.height/img.height)*SCALE;
+  const w=img.width*s, h=img.height*s;
+  ctx.drawImage(img,(canv.width-w)/2, canv.height-h, w, h);
+}
+
+function tick(t){
+  if(playing && t-last > 1000/fps){
+    frame++; last=t;
+  }
+  drawCell(cmx,curMain,curFrames,frame);
+  const ord = order.map(i=>newFrames[i]).filter(Boolean);
+  drawCell(nmx,newMain,ord,frame);
+  document.getElementById('curInfo').textContent = curFrames.length?('кадр '+((frame%curFrames.length)+1)+'/'+curFrames.length):'';
+  document.getElementById('newInfo').textContent = ord.length?('кадр '+((frame%ord.length)+1)+'/'+ord.length):'';
+  requestAnimationFrame(tick);
+}
+
+function buildStrip(el, frames, labels){
+  el.innerHTML='';
+  frames.forEach((f,i)=>{
+    const wrap=document.createElement('div');
+    const c=document.createElement('canvas'); c.width=70;c.height=96;
+    const x=c.getContext('2d'); fit(x,c,f);
+    const l=document.createElement('div'); l.className='lbl'; l.textContent=labels[i];
+    wrap.appendChild(c); wrap.appendChild(l); el.appendChild(wrap);
+  });
+}
+
+function buildOrderCtl(){
+  const el=document.getElementById('orderCtl'); el.innerHTML='';
+  order.forEach((v,pos)=>{
+    const b=document.createElement('button');
+    b.textContent=v+1;
+    b.title='нажми, чтобы поменять с соседним';
+    b.onclick=()=>{ if(pos<order.length-1){[order[pos],order[pos+1]]=[order[pos+1],order[pos]];buildOrderCtl();} };
+    el.appendChild(b);
+  });
+}
+
+(async function(){
+  const curImgs = await Promise.all(CUR.map(load));
+  curFrames = curImgs.map(im=>cropToCanvas(im,0,im.width,false));
+  buildStrip(document.getElementById('curStrip'), curFrames, ['1','2','3','4']);
+
+  const newImgs = await Promise.all(NEW_SRC.map(([s])=>load(s)));
+  newFrames = NEW_SRC.map(([,half],i)=>{
+    const im=newImgs[i]; const hw=im.width/2;
+    return cropToCanvas(im, half*hw, hw, true);
+  });
+  document.getElementById('newCount').textContent = newFrames.length+' кадра';
+  buildStrip(document.getElementById('newStrip'), newFrames, ['1','2','3','4']);
+  buildOrderCtl();
+  requestAnimationFrame(tick);
+})();
+
+document.getElementById('playBtn').onclick=function(){playing=!playing;this.textContent=playing?'⏸ Пауза':'▶ Играть';};
+document.getElementById('fps').oninput=function(){fps=+this.value;document.getElementById('fpsVal').textContent=this.value;};
+document.getElementById('onion').onchange=function(){onion=this.checked;};
+</script>
+</body>
+</html>

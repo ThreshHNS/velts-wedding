@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Екатерина и Андрей · 20.08.2026</title>
+    <meta name="description" content="Приглашение на свадьбу Екатерины и Андрея — 20 августа 2026, Особняк Балинского, Санкт-Петербург.">
+    <meta name="theme-color" content="#79705f">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23e6e1d6'/%3E%3Cpath d='M16 25C6 18 8 9 16 14C24 9 26 18 16 25Z' fill='%233a3327'/%3E%3C/svg%3E">
+
+    <!-- Social sharing (Telegram / WhatsApp / VK preview) -->
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="ru_RU">
+    <meta property="og:url" content="https://velts-wedding.ru/">
+    <meta property="og:title" content="Екатерина и Андрей · 20.08.2026">
+    <meta property="og:description" content="С радостью приглашаем вас разделить с нами наш свадебный день — 20 августа 2026, Особняк Балинского, Санкт-Петербург.">
+    <meta property="og:image" content="https://velts-wedding.ru/figma-export/processed/hero-kiss.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Екатерина и Андрей · 20.08.2026">
+    <meta name="twitter:description" content="С радостью приглашаем вас разделить с нами наш свадебный день — 20 августа 2026.">
+    <meta name="twitter:image" content="https://velts-wedding.ru/figma-export/processed/hero-kiss.jpg">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Drifting petals -->
+    <canvas class="petals" aria-hidden="true"></canvas>
+
+    <!-- HERO -->
+    <section class="hero" id="top">
+        <div class="hero__grid">
+            <div class="hero__lede">
+                <p class="hero__eyebrow" data-reveal>— Мы женимся —</p>
+                <div class="hero__names">
+                    <span class="hero__name hero__name--1" data-reveal-name>Екатерина</span>
+                    <span class="hero__and" data-reveal-name>и</span>
+                    <span class="hero__name hero__name--2" data-reveal-name>Андрей</span>
+                </div>
+                <div class="hero__date" data-reveal>20 августа 2026</div>
+                <p class="hero__invite" data-reveal>С радостью приглашаем вас разделить с нами один из самых важных дней в нашей жизни <em>— наш свадебный день!</em></p>
+            </div>
+
+            <figure class="hero__frame" data-reveal="mask">
+                <img src="figma-export/processed/hero-kiss.jpg" alt="Екатерина и Андрей">
+            </figure>
+        </div>
+
+        <a class="scroll-cue" href="#location" aria-label="Листать вниз">
+            <span class="scroll-cue__line"></span>
+        </a>
+    </section>
+
+    <!-- LOCATION -->
+    <section class="location" id="location">
+        <span class="corner corner--tl"></span>
+        <span class="corner corner--tr"></span>
+        <span class="corner corner--bl"></span>
+        <span class="corner corner--br"></span>
+
+        <div class="location__grid">
+            <figure class="location__photo" data-reveal="mask" data-parallax="0.06">
+                <img src="figma-export/venue-photo.jpg" alt="Особняк Балинского" loading="lazy" decoding="async">
+            </figure>
+
+            <div class="location__info">
+                <h2 class="heading heading--script heading--cream" data-reveal>Локация</h2>
+                <h3 class="location__venue" data-reveal>Особняк Балинского</h3>
+                <p class="location__address" data-reveal>Санкт-Петербург,<br>Пироговская набережная, 7</p>
+                <div class="location__actions" data-reveal>
+                    <a href="https://yandex.ru/maps/?text=Пироговская+набережная+7+Санкт-Петербург" target="_blank" rel="noopener" class="btn btn--cream">Посмотреть на карте</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TIMELINE -->
+    <section class="timeline" id="timeline">
+        <h2 class="heading heading--script" data-reveal>Тайминг</h2>
+
+        <div class="timeline__track">
+            <span class="timeline__line" data-reveal></span>
+
+            <div class="timeline__item" data-reveal>
+                <div class="timeline__time">15:30</div>
+                <h4 class="timeline__title">Сбор гостей</h4>
+                <p class="timeline__desc">Закуски, развлечения и знакомства</p>
+            </div>
+            <div class="timeline__item" data-reveal>
+                <div class="timeline__time">16:00</div>
+                <h4 class="timeline__title">Свадебная церемония</h4>
+                <p class="timeline__desc">Приготовьте платочки — впереди самый трогательный момент сегодняшнего вечера</p>
+            </div>
+            <div class="timeline__item" data-reveal>
+                <div class="timeline__time">17:00</div>
+                <h4 class="timeline__title">Начало банкета</h4>
+                <p class="timeline__desc">Время вкусного ужина, танцев, любви и трогательных слов</p>
+            </div>
+            <div class="timeline__item" data-reveal>
+                <div class="timeline__time">23:00</div>
+                <h4 class="timeline__title">Финал вечера</h4>
+                <p class="timeline__desc">Прощальные объятия и самые тёплые воспоминания, которые останутся с нами надолго</p>
+            </div>
+        </div>
+
+        <div class="timeline__illustration" data-reveal data-parallax="0.05">
+            <img src="figma-export/processed/timeline-table.png" alt="" loading="lazy" decoding="async">
+        </div>
+
+        <a class="btn btn--outline timeline__cal" id="calBtn" type="button" data-reveal href="#">Добавить в календарь</a>
+    </section>
+
+    <!-- DRESSCODE -->
+    <section class="dresscode" id="dresscode">
+        <span class="corner corner--tl"></span>
+        <span class="corner corner--tr"></span>
+        <span class="corner corner--bl"></span>
+        <span class="corner corner--br"></span>
+        <div class="dresscode__content">
+            <h2 class="heading heading--script heading--cream" data-reveal>Дресс-код</h2>
+            <p class="dresscode__text" data-reveal>Мы будем рады, если вы выберете в своих образах пастельные, мягкие оттенки без ярких принтов — это поможет создать лёгкую и гармоничную атмосферу праздника!</p>
+            <div class="dresscode__palette" data-reveal>
+                <div class="dresscode__doily">
+                    <img src="figma-export/processed/doily.png" alt="" class="dresscode__doily-img" loading="lazy" decoding="async">
+                    <div class="dresscode__doily-content">
+                        <span class="dresscode__palette-label">Палитра</span>
+                        <div class="dresscode__colors">
+                            <span class="dresscode__color" style="--c:#e5d2c4" data-name="Беж"></span>
+                            <span class="dresscode__color" style="--c:#f6cbd5" data-name="Пудра"></span>
+                            <span class="dresscode__color" style="--c:#e8d2e7" data-name="Лаванда"></span>
+                            <span class="dresscode__color" style="--c:#cfdfef" data-name="Небо"></span>
+                            <span class="dresscode__color" style="--c:#d1d9b4" data-name="Олива"></span>
+                            <span class="dresscode__color" style="--c:#f4eeb2" data-name="Ваниль"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p class="dresscode__legend" data-reveal>Беж · Пудра · Лаванда · Небо · Олива · Ваниль</p>
+        </div>
+    </section>
+
+    <!-- DETAILS / GIFTS -->
+    <section class="details" id="details">
+        <img src="figma-export/processed/gifts-flowers.png" alt="" class="details__decor" data-parallax="0.08" loading="lazy" decoding="async">
+        <h2 class="heading heading--script" data-reveal>Детали</h2>
+        <div class="details__gift-text" data-reveal>
+            <p>Ваше присутствие — уже самый лучший подарок для нас! Но если вы всё же захотите сделать нам приятное, мы будем искренне рады вашему вкладу в бюджет нашей молодой семьи.</p>
+        </div>
+        <div class="details__flowers-text" data-reveal>
+            <p>Если вы желаете подарить нам цветы, просим воспользоваться сервисом цветочной подписки. Так ваши букеты будут радовать нас гораздо дольше!</p>
+        </div>
+        <a href="#" class="btn btn--outline" data-reveal>Подарить цветы</a>
+    </section>
+
+    <!-- RSVP -->
+    <section class="rsvp" id="rsvp">
+        <div class="rsvp__frame" data-reveal>
+            <div class="rsvp__inner">
+                <p class="rsvp__text">Будем искренне рады видеть вас на нашем празднике! Чтобы мы могли учесть все ваши пожелания по меню и сделать вечер максимально комфортным для каждого, пожалуйста, ответьте на несколько коротких вопросов в нашей анкете.</p>
+                <a href="#" class="btn btn--outline">Заполнить анкету</a>
+                <div class="rsvp__organizer">
+                    <p>По всем вопросам обращайтесь к нашему организатору Дарье — она с радостью вам поможет!</p>
+                    <div class="rsvp__contact-btns">
+                        <a href="#" class="btn btn--outline btn--sm">Написать в тг</a>
+                        <a href="tel:" class="btn btn--outline btn--sm">Позвонить</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CLOSING -->
+    <section class="closing">
+        <div class="closing__lace closing__lace--top"></div>
+        <div class="closing__content" data-reveal>
+            <p class="closing__text">Уже считаем минуты,<br><span>Ваши Катя и Андрей</span></p>
+        </div>
+        <div class="closing__lace closing__lace--bottom"></div>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>

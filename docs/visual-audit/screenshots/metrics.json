@@ -1,0 +1,669 @@
+[
+  {
+    "file": "docs/visual-audit/screenshots/320x568-intro.png",
+    "viewport": {
+      "width": 320,
+      "height": 568
+    },
+    "canvas": {
+      "x": 28.765625,
+      "y": 0,
+      "width": 262.453125,
+      "height": 568
+    },
+    "body": {
+      "scrollWidth": 320,
+      "scrollHeight": 568
+    },
+    "document": {
+      "scrollWidth": 320,
+      "scrollHeight": 568
+    },
+    "horizontalOverflow": false,
+    "verticalOverflow": false
+  },
+  {
+    "file": "docs/visual-audit/screenshots/320x568-runner1.png",
+    "viewport": {
+      "width": 320,
+      "height": 568
+    },
+    "canvas": {
+      "x": 28.765625,
+      "y": 0,
+      "width": 262.453125,
+      "height": 568
+    },
+    "body": {
+      "scrollWidth": 320,
+      "scrollHeight": 568
+    },
+    "document": {
+      "scrollWidth": 320,
+      "scrollHeight": 568
+    },
+    "horizontalOverflow": false,
+    "verticalOverflow": false
+  },
+  {
+    "file": "docs/visual-audit/screenshots/320x568-runner2.png",
+    "viewport": {
+      "width": 320,
+      "height": 568
+    },
+    "canvas": {
+      "x": 28.765625,
+      "y": 0,
+      "width": 262.453125,
+      "height": 568
+    },
+    "body": {
+      "scrollWidth": 320,
+      "scrollHeight": 568
+    },
+    "document": {
+      "scrollWidth": 320,
+      "scrollHeight": 568
+    },
+    "horizontalOverflow": false,
+    "verticalOverflow": false
+  },
+  {
+    "file": "docs/visual-audit/screenshots/320x568-runner3.png",
+    "viewport": {
+      "width": 320,
+      "height": 568
+    },
+    "canvas": {
+      "x": 28.765625,
+      "y": 0,
+      "width": 262.453125,
+      "height": 568
+    },
+    "body": {
+      "scrollWidth": 320,
+      "scrollHeight": 568
+    },
+    "document": {
+      "scrollWidth": 320,
+      "scrollHeight": 568
+    },
+    "horizontalOverflow": false,
+    "verticalOverflow": false
+  },
+  {
+    "file": "docs/visual-audit/screenshots/320x568-pause.png",
+    "viewport": {
+      "width": 320,
+      "height": 568
+    },
+    "canvas": {
+      "x": 28.765625,
+      "y": 0,
+      "width": 262.453125,
+      "height": 568
+    },
+    "body": {
+      "scrollWidth": 320,
+      "scrollHeight": 568
+    },
+    "document": {
+      "scrollWidth": 320,
+      "scrollHeight": 568
+    },
+    "horizontalOverflow": false,
+    "verticalOverflow": false
+  },
+  {
+    "file": "docs/visual-audit/screenshots/320x568-finale.png",
+    "viewport": {
+      "width": 320,
+      "height": 568
+    },
+    "canvas": {
+      "x": 28.765625,
+      "y": 0,
+      "width": 262.453125,
+      "height": 568
+    },
+    "body": {
+      "scrollWidth": 320,
+      "scrollHeight": 568
+    },
+    "document": {
+      "scrollWidth": 320,
+      "scrollHeight": 568
+    },
+    "horizontalOverflow": false,
+    "verticalOverflow": false
+  },
+  {
+    "file": "docs/visual-audit/screenshots/320x568-finale-kaya.png",
+    "viewport": {
+      "width": 320,
+      "height": 568
+    },
+    "canvas": {
+      "x": 28.765625,
+      "y": 0,
+      "width": 262.453125,
+      "height": 568
+    },
+    "body": {
+      "scrollWidth": 320,
+      "scrollHeight": 568
+    },
+    "document": {
+      "scrollWidth": 320,
+      "scrollHeight": 568
+    },
+    "horizontalOverflow": false,
+    "verticalOverflow": false
+  },
+  {
+    "file": "docs/visual-audit/screenshots/375x667-intro.png",
+    "viewport": {
+      "width": 375,
+      "height": 667
+    },
+    "canvas": {
+      "x": 33.390625,
+      "y": 0,
+      "width": 308.203125,
+      "height": 667
+    },
+    "body": {
+      "scrollWidth": 375,
+      "scrollHeight": 667
+    },
+    "document": {
+      "scrollWidth": 375,
+      "scrollHeight": 667
+    },
+    "horizontalOverflow": false,
+    "verticalOverflow": false
+  },
+  {
+    "file": "docs/visual-audit/screenshots/375x667-runner1.png",
+    "viewport": {
+      "width": 375,
+      "height": 667
+    },
+    "canvas": {
+      "x": 33.390625,
+      "y": 0,
+      "width": 308.203125,
+      "height": 667
+    },
+    "body": {
+      "scrollWidth": 375,
+      "scrollHeight": 667
+    },
+    "document": {
+      "scrollWidth": 375,
+      "scrollHeight": 667
+    },
+    "horizontalOverflow": false,
+    "verticalOverflow": false
+  },
+  {
+    "file": "docs/visual-audit/screenshots/375x667-runner2.png",
+    "viewport": {
+      "width": 375,
+      "height": 667
+    },
+    "canvas": {
+      "x": 33.390625,
+      "y": 0,
+      "width": 308.203125,
+      "height": 667
+    },
+    "body": {
+      "scrollWidth": 375,
+      "scrollHeight": 667
+    },
+    "document": {
+      "scrollWidth": 375,
+      "scrollHeight": 667
+    },
+    "horizontalOverflow": false,
+    "verticalOverflow": false
+  },
+  {
+    "file": "docs/visual-audit/screenshots/375x667-runner3.png",
+    "viewport": {
+      "width": 375,
+      "height": 667
+    },
+    "canvas": {
+      "x": 33.390625,
+      "y": 0,
+      "width": 308.203125,
+      "height": 667
+    },
+    "body": {
+      "scrollWidth": 375,
+      "scrollHeight": 667
+    },
+    "document": {
+      "scrollWidth": 375,
+      "scrollHeight": 667
+    },
+    "horizontalOverflow": false,
+    "verticalOverflow": false
+  },
+  {
+    "file": "docs/visual-audit/screenshots/375x667-pause.png",
+    "viewport": {
+      "width": 375,
+      "height": 667
+    },
+    "canvas": {
+      "x": 33.390625,
+      "y": 0,
+      "width": 308.203125,
+      "height": 667
+    },
+    "body": {
+      "scrollWidth": 375,
+      "scrollHeight": 667
+    },
+    "document": {
+      "scrollWidth": 375,
+      "scrollHeight": 667
+    },
+    "horizontalOverflow": false,
+    "verticalOverflow": false
+  },
+  {
+    "file": "docs/visual-audit/screenshots/375x667-finale.png",
+    "viewport": {
+      "width": 375,
+      "height": 667
+    },
+    "canvas": {
+      "x": 33.390625,
+      "y": 0,
+      "width": 308.203125,
+      "height": 667
+    },
+    "body": {
+      "scrollWidth": 375,
+      "scrollHeight": 667
+    },
+    "document": {
+      "scrollWidth": 375,
+      "scrollHeight": 667
+    },
+    "horizontalOverflow": false,
+    "verticalOverflow": false
+  },
+  {
+    "file": "docs/visual-audit/screenshots/375x667-finale-kaya.png",
+    "viewport": {
+      "width": 375,
+      "height": 667
+    },
+    "canvas": {
+      "x": 33.390625,
+      "y": 0,
+      "width": 308.203125,
+      "height": 667
+    },
+    "body": {
+      "scrollWidth": 375,
+      "scrollHeight": 667
+    },
+    "document": {
+      "scrollWidth": 375,
+      "scrollHeight": 667
+    },
+    "horizontalOverflow": false,
+    "verticalOverflow": false
+  },
+  {
+    "file": "docs/visual-audit/screenshots/390x844-intro.png",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "canvas": {
+      "x": 0,
+      "y": 0,
+      "width": 390,
+      "height": 844
+    },
+    "body": {
+      "scrollWidth": 390,
+      "scrollHeight": 844
+    },
+    "document": {
+      "scrollWidth": 390,
+      "scrollHeight": 844
+    },
+    "horizontalOverflow": false,
+    "verticalOverflow": false
+  },
+  {
+    "file": "docs/visual-audit/screenshots/390x844-runner1.png",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "canvas": {
+      "x": 0,
+      "y": 0,
+      "width": 390,
+      "height": 844
+    },
+    "body": {
+      "scrollWidth": 390,
+      "scrollHeight": 844
+    },
+    "document": {
+      "scrollWidth": 390,
+      "scrollHeight": 844
+    },
+    "horizontalOverflow": false,
+    "verticalOverflow": false
+  },
+  {
+    "file": "docs/visual-audit/screenshots/390x844-runner2.png",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "canvas": {
+      "x": 0,
+      "y": 0,
+      "width": 390,
+      "height": 844
+    },
+    "body": {
+      "scrollWidth": 390,
+      "scrollHeight": 844
+    },
+    "document": {
+      "scrollWidth": 390,
+      "scrollHeight": 844
+    },
+    "horizontalOverflow": false,
+    "verticalOverflow": false
+  },
+  {
+    "file": "docs/visual-audit/screenshots/390x844-runner3.png",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "canvas": {
+      "x": 0,
+      "y": 0,
+      "width": 390,
+      "height": 844
+    },
+    "body": {
+      "scrollWidth": 390,
+      "scrollHeight": 844
+    },
+    "document": {
+      "scrollWidth": 390,
+      "scrollHeight": 844
+    },
+    "horizontalOverflow": false,
+    "verticalOverflow": false
+  },
+  {
+    "file": "docs/visual-audit/screenshots/390x844-pause.png",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "canvas": {
+      "x": 0,
+      "y": 0,
+      "width": 390,
+      "height": 844
+    },
+    "body": {
+      "scrollWidth": 390,
+      "scrollHeight": 844
+    },
+    "document": {
+      "scrollWidth": 390,
+      "scrollHeight": 844
+    },
+    "horizontalOverflow": false,
+    "verticalOverflow": false
+  },
+  {
+    "file": "docs/visual-audit/screenshots/390x844-finale.png",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "canvas": {
+      "x": 0,
+      "y": 0,
+      "width": 390,
+      "height": 844
+    },
+    "body": {
+      "scrollWidth": 390,
+      "scrollHeight": 844
+    },
+    "document": {
+      "scrollWidth": 390,
+      "scrollHeight": 844
+    },
+    "horizontalOverflow": false,
+    "verticalOverflow": false
+  },
+  {
+    "file": "docs/visual-audit/screenshots/390x844-finale-kaya.png",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "canvas": {
+      "x": 0,
+      "y": 0,
+      "width": 390,
+      "height": 844
+    },
+    "body": {
+      "scrollWidth": 390,
+      "scrollHeight": 844
+    },
+    "document": {
+      "scrollWidth": 390,
+      "scrollHeight": 844
+    },
+    "horizontalOverflow": false,
+    "verticalOverflow": false
+  },
+  {
+    "file": "docs/visual-audit/screenshots/414x896-intro.png",
+    "viewport": {
+      "width": 414,
+      "height": 896
+    },
+    "canvas": {
+      "x": 0,
+      "y": 0,
+      "width": 414,
+      "height": 895.9375
+    },
+    "body": {
+      "scrollWidth": 414,
+      "scrollHeight": 896
+    },
+    "document": {
+      "scrollWidth": 414,
+      "scrollHeight": 896
+    },
+    "horizontalOverflow": false,
+    "verticalOverflow": false
+  },
+  {
+    "file": "docs/visual-audit/screenshots/414x896-runner1.png",
+    "viewport": {
+      "width": 414,
+      "height": 896
+    },
+    "canvas": {
+      "x": 0,
+      "y": 0,
+      "width": 414,
+      "height": 895.9375
+    },
+    "body": {
+      "scrollWidth": 414,
+      "scrollHeight": 896
+    },
+    "document": {
+      "scrollWidth": 414,
+      "scrollHeight": 896
+    },
+    "horizontalOverflow": false,
+    "verticalOverflow": false
+  },
+  {
+    "file": "docs/visual-audit/screenshots/414x896-runner2.png",
+    "viewport": {
+      "width": 414,
+      "height": 896
+    },
+    "canvas": {
+      "x": 0,
+      "y": 0,
+      "width": 414,
+      "height": 895.9375
+    },
+    "body": {
+      "scrollWidth": 414,
+      "scrollHeight": 896
+    },
+    "document": {
+      "scrollWidth": 414,
+      "scrollHeight": 896
+    },
+    "horizontalOverflow": false,
+    "verticalOverflow": false
+  },
+  {
+    "file": "docs/visual-audit/screenshots/414x896-runner3.png",
+    "viewport": {
+      "width": 414,
+      "height": 896
+    },
+    "canvas": {
+      "x": 0,
+      "y": 0,
+      "width": 414,
+      "height": 895.9375
+    },
+    "body": {
+      "scrollWidth": 414,
+      "scrollHeight": 896
+    },
+    "document": {
+      "scrollWidth": 414,
+      "scrollHeight": 896
+    },
+    "horizontalOverflow": false,
+    "verticalOverflow": false
+  },
+  {
+    "file": "docs/visual-audit/screenshots/414x896-pause.png",
+    "viewport": {
+      "width": 414,
+      "height": 896
+    },
+    "canvas": {
+      "x": 0,
+      "y": 0,
+      "width": 414,
+      "height": 895.9375
+    },
+    "body": {
+      "scrollWidth": 414,
+      "scrollHeight": 896
+    },
+    "document": {
+      "scrollWidth": 414,
+      "scrollHeight": 896
+    },
+    "horizontalOverflow": false,
+    "verticalOverflow": false
+  },
+  {
+    "file": "docs/visual-audit/screenshots/414x896-finale.png",
+    "viewport": {
+      "width": 414,
+      "height": 896
+    },
+    "canvas": {
+      "x": 0,
+      "y": 0,
+      "width": 414,
+      "height": 895.9375
+    },
+    "body": {
+      "scrollWidth": 414,
+      "scrollHeight": 896
+    },
+    "document": {
+      "scrollWidth": 414,
+      "scrollHeight": 896
+    },
+    "horizontalOverflow": false,
+    "verticalOverflow": false
+  },
+  {
+    "file": "docs/visual-audit/screenshots/414x896-finale-kaya.png",
+    "viewport": {
+      "width": 414,
+      "height": 896
+    },
+    "canvas": {
+      "x": 0,
+      "y": 0,
+      "width": 414,
+      "height": 895.9375
+    },
+    "body": {
+      "scrollWidth": 414,
+      "scrollHeight": 896
+    },
+    "document": {
+      "scrollWidth": 414,
+      "scrollHeight": 896
+    },
+    "horizontalOverflow": false,
+    "verticalOverflow": false
+  },
+  {
+    "file": "docs/visual-audit/screenshots/720x390-landscape-overlay.png",
+    "viewport": {
+      "width": 720,
+      "height": 390
+    },
+    "canvas": {
+      "x": 269.890625,
+      "y": 0,
+      "width": 180.203125,
+      "height": 390
+    },
+    "body": {
+      "scrollWidth": 720,
+      "scrollHeight": 390
+    },
+    "document": {
+      "scrollWidth": 720,
+      "scrollHeight": 390
+    },
+    "horizontalOverflow": false,
+    "verticalOverflow": false
+  }
+]

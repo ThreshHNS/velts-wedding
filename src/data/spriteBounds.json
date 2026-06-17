@@ -1,0 +1,470 @@
+{
+  "bride-idle": {
+    "contentWidth": 150,
+    "contentHeight": 238,
+    "textureWidth": 186,
+    "textureHeight": 260
+  },
+  "bride-wave": {
+    "contentWidth": 147,
+    "contentHeight": 238,
+    "textureWidth": 186,
+    "textureHeight": 260
+  },
+  "couple-pose": {
+    "contentWidth": 234,
+    "contentHeight": 320,
+    "textureWidth": 270,
+    "textureHeight": 356
+  },
+  "groom-idle": {
+    "contentWidth": 77,
+    "contentHeight": 224,
+    "textureWidth": 113,
+    "textureHeight": 246
+  },
+  "groom-jump": {
+    "contentWidth": 116,
+    "contentHeight": 208,
+    "textureWidth": 152,
+    "textureHeight": 244
+  },
+  "groom-land": {
+    "contentWidth": 118,
+    "contentHeight": 197,
+    "textureWidth": 154,
+    "textureHeight": 233
+  },
+  "groom-run-1": {
+    "contentWidth": 134,
+    "contentHeight": 219,
+    "textureWidth": 193,
+    "textureHeight": 241
+  },
+  "groom-run-2": {
+    "contentWidth": 157,
+    "contentHeight": 219,
+    "textureWidth": 193,
+    "textureHeight": 241
+  },
+  "groom-run-3": {
+    "contentWidth": 111,
+    "contentHeight": 219,
+    "textureWidth": 193,
+    "textureHeight": 241
+  },
+  "groom-run-4": {
+    "contentWidth": 156,
+    "contentHeight": 219,
+    "textureWidth": 193,
+    "textureHeight": 241
+  },
+  "kaya-peek": {
+    "contentWidth": 172,
+    "contentHeight": 286,
+    "textureWidth": 208,
+    "textureHeight": 322
+  },
+  "kaya-run": {
+    "contentWidth": 280,
+    "contentHeight": 211,
+    "textureWidth": 316,
+    "textureHeight": 247
+  },
+  "kaya-sign": {
+    "contentWidth": 218,
+    "contentHeight": 292,
+    "textureWidth": 254,
+    "textureHeight": 328
+  },
+  "kaya-sit": {
+    "contentWidth": 214,
+    "contentHeight": 320,
+    "textureWidth": 214,
+    "textureHeight": 320
+  },
+  "kaya-stand": {
+    "contentWidth": 152,
+    "contentHeight": 276,
+    "textureWidth": 188,
+    "textureHeight": 312
+  },
+  "paw": {
+    "contentWidth": 117,
+    "contentHeight": 107,
+    "textureWidth": 153,
+    "textureHeight": 143
+  },
+  "collectible-bouquet": {
+    "contentWidth": 232,
+    "contentHeight": 252,
+    "textureWidth": 268,
+    "textureHeight": 288
+  },
+  "collectible-bow": {
+    "contentWidth": 160,
+    "contentHeight": 83,
+    "textureWidth": 196,
+    "textureHeight": 119
+  },
+  "collectible-envelope": {
+    "contentWidth": 167,
+    "contentHeight": 123,
+    "textureWidth": 203,
+    "textureHeight": 159
+  },
+  "collectible-heart": {
+    "contentWidth": 115,
+    "contentHeight": 97,
+    "textureWidth": 151,
+    "textureHeight": 133
+  },
+  "collectible-ring": {
+    "contentWidth": 126,
+    "contentHeight": 162,
+    "textureWidth": 162,
+    "textureHeight": 198
+  },
+  "collectible-suit": {
+    "contentWidth": 213,
+    "contentHeight": 287,
+    "textureWidth": 249,
+    "textureHeight": 323
+  },
+  "lamp-post": {
+    "contentWidth": 232,
+    "contentHeight": 840,
+    "textureWidth": 268,
+    "textureHeight": 876
+  },
+  "obstacle-car": {
+    "contentWidth": 812,
+    "contentHeight": 280,
+    "textureWidth": 848,
+    "textureHeight": 316
+  },
+  "obstacle-deadline": {
+    "contentWidth": 283,
+    "contentHeight": 451,
+    "textureWidth": 319,
+    "textureHeight": 487
+  },
+  "obstacle-puddle": {
+    "contentWidth": 691,
+    "contentHeight": 387,
+    "textureWidth": 727,
+    "textureHeight": 423
+  },
+  "obstacle-rain-cloud": {
+    "contentWidth": 651,
+    "contentHeight": 628,
+    "textureWidth": 687,
+    "textureHeight": 664
+  },
+  "obstacle-traffic-light": {
+    "contentWidth": 188,
+    "contentHeight": 488,
+    "textureWidth": 224,
+    "textureHeight": 524
+  },
+  "sign-katya": {
+    "contentWidth": 454,
+    "contentHeight": 366,
+    "textureWidth": 490,
+    "textureHeight": 402
+  },
+  "string-lights": {
+    "contentWidth": 1320,
+    "contentHeight": 212,
+    "textureWidth": 1356,
+    "textureHeight": 248
+  },
+  "decor/bush": {
+    "contentWidth": 328,
+    "contentHeight": 155,
+    "textureWidth": 364,
+    "textureHeight": 191
+  },
+  "decor/flower-box": {
+    "contentWidth": 384,
+    "contentHeight": 238,
+    "textureWidth": 420,
+    "textureHeight": 274
+  },
+  "decor/flower-box2": {
+    "contentWidth": 229,
+    "contentHeight": 195,
+    "textureWidth": 265,
+    "textureHeight": 231
+  },
+  "decor/flower-pot": {
+    "contentWidth": 162,
+    "contentHeight": 213,
+    "textureWidth": 198,
+    "textureHeight": 249
+  },
+  "decor/flowers-small": {
+    "contentWidth": 127,
+    "contentHeight": 109,
+    "textureWidth": 163,
+    "textureHeight": 145
+  },
+  "decor/lamp-post": {
+    "contentWidth": 232,
+    "contentHeight": 840,
+    "textureWidth": 268,
+    "textureHeight": 876
+  },
+  "decor/railing": {
+    "contentWidth": 459,
+    "contentHeight": 130,
+    "textureWidth": 495,
+    "textureHeight": 166
+  },
+  "decor/sign-arrow": {
+    "contentWidth": 688,
+    "contentHeight": 467,
+    "textureWidth": 724,
+    "textureHeight": 503
+  },
+  "decor/string-lights": {
+    "contentWidth": 1320,
+    "contentHeight": 212,
+    "textureWidth": 1356,
+    "textureHeight": 248
+  },
+  "decor/tree": {
+    "contentWidth": 558,
+    "contentHeight": 575,
+    "textureWidth": 594,
+    "textureHeight": 611
+  },
+  "furniture/candle": {
+    "contentWidth": 54,
+    "contentHeight": 88,
+    "textureWidth": 90,
+    "textureHeight": 124
+  },
+  "furniture/dresser": {
+    "contentWidth": 321,
+    "contentHeight": 357,
+    "textureWidth": 357,
+    "textureHeight": 393
+  },
+  "furniture/mirror": {
+    "contentWidth": 201,
+    "contentHeight": 494,
+    "textureWidth": 237,
+    "textureHeight": 530
+  },
+  "furniture/nightstand": {
+    "contentWidth": 166,
+    "contentHeight": 326,
+    "textureWidth": 202,
+    "textureHeight": 362
+  },
+  "furniture/painting": {
+    "contentWidth": 125,
+    "contentHeight": 174,
+    "textureWidth": 161,
+    "textureHeight": 210
+  },
+  "furniture/photo-frame": {
+    "contentWidth": 82,
+    "contentHeight": 88,
+    "textureWidth": 118,
+    "textureHeight": 124
+  },
+  "furniture/plant": {
+    "contentWidth": 144,
+    "contentHeight": 221,
+    "textureWidth": 180,
+    "textureHeight": 257
+  },
+  "furniture/sconce": {
+    "contentWidth": 94,
+    "contentHeight": 124,
+    "textureWidth": 130,
+    "textureHeight": 160
+  },
+  "furniture/shelf": {
+    "contentWidth": 315,
+    "contentHeight": 185,
+    "textureWidth": 351,
+    "textureHeight": 221
+  },
+  "furniture/vase": {
+    "contentWidth": 142,
+    "contentHeight": 175,
+    "textureWidth": 178,
+    "textureHeight": 211
+  },
+  "furniture/wardrobe": {
+    "contentWidth": 349,
+    "contentHeight": 547,
+    "textureWidth": 385,
+    "textureHeight": 583
+  },
+  "fx/dust-1": {
+    "contentWidth": 243,
+    "contentHeight": 95,
+    "textureWidth": 259,
+    "textureHeight": 111
+  },
+  "fx/dust-2": {
+    "contentWidth": 169,
+    "contentHeight": 68,
+    "textureWidth": 185,
+    "textureHeight": 84
+  },
+  "fx/dust-3": {
+    "contentWidth": 152,
+    "contentHeight": 52,
+    "textureWidth": 168,
+    "textureHeight": 68
+  },
+  "fx/dust-4": {
+    "contentWidth": 284,
+    "contentHeight": 69,
+    "textureWidth": 300,
+    "textureHeight": 85
+  },
+  "fx/heart-1": {
+    "contentWidth": 54,
+    "contentHeight": 49,
+    "textureWidth": 70,
+    "textureHeight": 65
+  },
+  "fx/heart-2": {
+    "contentWidth": 130,
+    "contentHeight": 96,
+    "textureWidth": 146,
+    "textureHeight": 112
+  },
+  "fx/heart-3": {
+    "contentWidth": 94,
+    "contentHeight": 105,
+    "textureWidth": 110,
+    "textureHeight": 121
+  },
+  "fx/sparkle-1": {
+    "contentWidth": 48,
+    "contentHeight": 57,
+    "textureWidth": 64,
+    "textureHeight": 73
+  },
+  "fx/sparkle-2": {
+    "contentWidth": 177,
+    "contentHeight": 161,
+    "textureWidth": 193,
+    "textureHeight": 177
+  },
+  "fx/sparkle-3": {
+    "contentWidth": 144,
+    "contentHeight": 112,
+    "textureWidth": 160,
+    "textureHeight": 128
+  },
+  "fx/sparkle-4": {
+    "contentWidth": 131,
+    "contentHeight": 112,
+    "textureWidth": 147,
+    "textureHeight": 128
+  },
+  "obstacles/bollard": {
+    "contentWidth": 118,
+    "contentHeight": 129,
+    "textureWidth": 154,
+    "textureHeight": 165
+  },
+  "obstacles/bricks": {
+    "contentWidth": 202,
+    "contentHeight": 63,
+    "textureWidth": 238,
+    "textureHeight": 99
+  },
+  "obstacles/bush": {
+    "contentWidth": 230,
+    "contentHeight": 137,
+    "textureWidth": 266,
+    "textureHeight": 173
+  },
+  "obstacles/can": {
+    "contentWidth": 159,
+    "contentHeight": 64,
+    "textureWidth": 195,
+    "textureHeight": 100
+  },
+  "obstacles/car": {
+    "contentWidth": 812,
+    "contentHeight": 280,
+    "textureWidth": 848,
+    "textureHeight": 316
+  },
+  "obstacles/drain": {
+    "contentWidth": 148,
+    "contentHeight": 70,
+    "textureWidth": 184,
+    "textureHeight": 106
+  },
+  "obstacles/flower-pot": {
+    "contentWidth": 201,
+    "contentHeight": 176,
+    "textureWidth": 237,
+    "textureHeight": 212
+  },
+  "obstacles/manhole": {
+    "contentWidth": 182,
+    "contentHeight": 87,
+    "textureWidth": 218,
+    "textureHeight": 123
+  },
+  "obstacles/paper-stack": {
+    "contentWidth": 283,
+    "contentHeight": 451,
+    "textureWidth": 319,
+    "textureHeight": 487
+  },
+  "obstacles/puddle-small": {
+    "contentWidth": 193,
+    "contentHeight": 56,
+    "textureWidth": 229,
+    "textureHeight": 92
+  },
+  "obstacles/puddle": {
+    "contentWidth": 691,
+    "contentHeight": 387,
+    "textureWidth": 727,
+    "textureHeight": 423
+  },
+  "obstacles/rain-cloud": {
+    "contentWidth": 651,
+    "contentHeight": 628,
+    "textureWidth": 687,
+    "textureHeight": 664
+  },
+  "obstacles/rock": {
+    "contentWidth": 107,
+    "contentHeight": 59,
+    "textureWidth": 143,
+    "textureHeight": 95
+  },
+  "obstacles/splash": {
+    "contentWidth": 691,
+    "contentHeight": 387,
+    "textureWidth": 727,
+    "textureHeight": 423
+  },
+  "obstacles/traffic-light": {
+    "contentWidth": 188,
+    "contentHeight": 488,
+    "textureWidth": 224,
+    "textureHeight": 524
+  },
+  "kaya-loaf": {
+    "contentWidth": 359,
+    "contentHeight": 320,
+    "textureWidth": 359,
+    "textureHeight": 320
+  }
+}
