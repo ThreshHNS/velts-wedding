@@ -1,27 +1,77 @@
 {
-  "canvas": { "width": 390, "height": 844, "groundY": 642 },
-  "player": { "x": 84, "h": 118 },
+  "canvas": {
+    "width": 390,
+    "height": 844,
+    "groundY": 642
+  },
+  "player": {
+    "x": 84,
+    "h": 118
+  },
   "speed": 156,
   "collectibleH": 44,
   "levels": [
     {
       "id": "level_1",
       "background": "room",
-      "groundY": 510,
+      "groundY": 580,
       "backgroundZoom": 1.3,
       "decor": [
-        { "key": "furniture/wardrobe", "h": 158 },
-        { "key": "furniture/dresser", "h": 108 },
-        { "key": "furniture/mirror", "h": 150 },
-        { "key": "furniture/nightstand", "h": 98 },
-        { "key": "furniture/plant", "h": 84 },
-        { "key": "furniture/shelf", "h": 52, "yOffset": 122 },
-        { "key": "furniture/candle", "h": 58, "yOffset": 54, "glow": true },
-        { "key": "furniture/sconce", "h": 70, "yOffset": 172, "glow": true },
-        { "key": "furniture/painting", "h": 92, "yOffset": 128 },
-        { "key": "furniture/photo-frame", "h": 52, "yOffset": 78 },
-        { "key": "furniture/vase", "h": 70 },
-        { "key": "decor/flowers-small", "h": 48 }
+        {
+          "key": "furniture/wardrobe",
+          "h": 158
+        },
+        {
+          "key": "furniture/dresser",
+          "h": 108
+        },
+        {
+          "key": "furniture/mirror",
+          "h": 150
+        },
+        {
+          "key": "furniture/nightstand",
+          "h": 98
+        },
+        {
+          "key": "furniture/plant",
+          "h": 84
+        },
+        {
+          "key": "furniture/shelf",
+          "h": 52,
+          "yOffset": 122
+        },
+        {
+          "key": "furniture/candle",
+          "h": 58,
+          "yOffset": 54,
+          "glow": true
+        },
+        {
+          "key": "furniture/sconce",
+          "h": 70,
+          "yOffset": 172,
+          "glow": true
+        },
+        {
+          "key": "furniture/painting",
+          "h": 92,
+          "yOffset": 128
+        },
+        {
+          "key": "furniture/photo-frame",
+          "h": 52,
+          "yOffset": 78
+        },
+        {
+          "key": "furniture/vase",
+          "h": 70
+        },
+        {
+          "key": "decor/flowers-small",
+          "h": 48
+        }
       ],
       "obstacles": [],
       "collectibles": [
@@ -31,28 +81,62 @@
         "collectible-bouquet",
         "collectible-envelope"
       ],
-      "kaya": { "texture": "kaya-sit", "h": 54 }
+      "kaya": {
+        "texture": "kaya-sit",
+        "h": 54
+      },
+      "backgroundOffsetY": 70
     },
     {
       "id": "level_2",
       "background": "rain",
-      "groundY": 510,
+      "groundY": 580,
       "backgroundZoom": 1.3,
       "tint": "#7c83bd",
       "rain": true,
       "decor": [
-        { "key": "decor/lamp-post", "h": 184, "glow": true },
-        { "key": "obstacles/bollard", "h": 52 }
+        {
+          "key": "decor/lamp-post",
+          "h": 184,
+          "glow": true
+        },
+        {
+          "key": "obstacles/bollard",
+          "h": 52
+        }
       ],
       "obstacles": [
-        { "key": "obstacles/car", "h": 60 },
-        { "key": "obstacles/traffic-light", "h": 132 },
-        { "key": "obstacles/paper-stack", "h": 88 },
-        { "key": "obstacles/rain-cloud", "h": 62, "air": 128 },
-        { "key": "obstacles/puddle", "h": 36 }
+        {
+          "key": "obstacles/car",
+          "h": 60
+        },
+        {
+          "key": "obstacles/traffic-light",
+          "h": 132
+        },
+        {
+          "key": "obstacles/paper-stack",
+          "h": 88
+        },
+        {
+          "key": "obstacles/rain-cloud",
+          "h": 62,
+          "air": 128
+        },
+        {
+          "key": "obstacles/puddle",
+          "h": 36
+        }
       ],
-      "collectibles": ["collectible-heart", "collectible-ring"],
-      "kaya": { "texture": "kaya-sit", "h": 50 }
+      "collectibles": [
+        "collectible-heart",
+        "collectible-ring"
+      ],
+      "kaya": {
+        "texture": "kaya-sit",
+        "h": 50
+      },
+      "backgroundOffsetY": 70
     },
     {
       "id": "level_3",
@@ -60,19 +144,54 @@
       "groundY": 580,
       "backgroundZoom": 1.3,
       "decor": [
-        { "key": "decor/lamp-post", "h": 184, "glow": true },
-        { "key": "decor/tree", "h": 200 },
-        { "key": "decor/string-lights", "h": 42, "yOffset": 136, "glow": true },
-        { "key": "decor/flower-box", "h": 72 },
-        { "key": "decor/bush", "h": 58 },
-        { "key": "decor/sign-arrow", "h": 84 }
+        {
+          "key": "decor/lamp-post",
+          "h": 184,
+          "glow": true
+        },
+        {
+          "key": "decor/tree",
+          "h": 200
+        },
+        {
+          "key": "decor/string-lights",
+          "h": 42,
+          "yOffset": 136,
+          "glow": true
+        },
+        {
+          "key": "decor/flower-box",
+          "h": 72
+        },
+        {
+          "key": "decor/bush",
+          "h": 58
+        },
+        {
+          "key": "decor/sign-arrow",
+          "h": 84
+        }
       ],
       "obstacles": [
-        { "key": "obstacles/puddle", "h": 36 },
-        { "key": "obstacles/rain-cloud", "h": 62, "air": 128 }
+        {
+          "key": "obstacles/puddle",
+          "h": 36
+        },
+        {
+          "key": "obstacles/rain-cloud",
+          "h": 62,
+          "air": 128
+        }
       ],
-      "collectibles": ["collectible-heart", "collectible-bouquet", "collectible-ring"],
-      "kaya": { "texture": "kaya-loaf", "h": 52 }
+      "collectibles": [
+        "collectible-heart",
+        "collectible-bouquet",
+        "collectible-ring"
+      ],
+      "kaya": {
+        "texture": "kaya-loaf",
+        "h": 44
+      }
     }
   ]
 }

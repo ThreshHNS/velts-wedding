@@ -78,10 +78,10 @@
     "textureHeight": 328
   },
   "kaya-sit": {
-    "contentWidth": 214,
-    "contentHeight": 320,
-    "textureWidth": 214,
-    "textureHeight": 320
+    "contentWidth": 332,
+    "contentHeight": 300,
+    "textureWidth": 332,
+    "textureHeight": 312
   },
   "kaya-stand": {
     "contentWidth": 152,
@@ -466,5 +466,11 @@
     "contentHeight": 320,
     "textureWidth": 359,
     "textureHeight": 320
+  },
+  "kaya-sit-blink": {
+    "contentWidth": 332,
+    "contentHeight": 300,
+    "textureWidth": 332,
+    "textureHeight": 312
   }
 }

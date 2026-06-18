@@ -6,7 +6,6 @@ const LANDING_URL = '/main/';
 export function App() {
   const gameRef = useRef<HTMLDivElement | null>(null);
   const controllerRef = useRef<GameController | null>(null);
-  const focusedRef = useRef(true);
   const [status, setStatus] = useState<'loading' | 'ready' | 'error'>('loading');
   const [isLandscape, setIsLandscape] = useState(false);
 
@@ -56,31 +55,21 @@ export function App() {
   }, []);
 
   useEffect(() => {
-    focusedRef.current = document.hasFocus();
-    const shouldPause = () => document.hidden || isLandscape || !focusedRef.current;
+    // Pause only when the page is genuinely backgrounded or rotated to landscape.
+    // NOT on window focus loss: some iOS browsers (Arc) report the visible page as
+    // unfocused, and a paused Phaser loop stops processing taps — which made the
+    // buttons dead there. `document.hidden` is the reliable "not visible" signal.
     const syncPlayback = () => {
       const controller = controllerRef.current;
       if (!controller || status !== 'ready') return;
-      if (shouldPause()) controller.pause();
+      if (document.hidden || isLandscape) controller.pause();
       else controller.resume();
-    };
-    const onBlur = () => {
-      focusedRef.current = false;
-      syncPlayback();
-    };
-    const onFocus = () => {
-      focusedRef.current = true;
-      syncPlayback();
     };
 
     syncPlayback();
     document.addEventListener('visibilitychange', syncPlayback);
-    window.addEventListener('blur', onBlur);
-    window.addEventListener('focus', onFocus);
     return () => {
       document.removeEventListener('visibilitychange', syncPlayback);
-      window.removeEventListener('blur', onBlur);
-      window.removeEventListener('focus', onFocus);
     };
   }, [isLandscape, status]);
 

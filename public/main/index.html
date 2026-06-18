@@ -15,6 +15,10 @@
     <meta property="og:title" content="Екатерина и Андрей · 20.08.2026">
     <meta property="og:description" content="С радостью приглашаем вас разделить с нами наш свадебный день — 20 августа 2026, Особняк Балинского, Санкт-Петербург.">
     <meta property="og:image" content="https://velts-wedding.ru/figma-export/processed/hero-kiss.jpg">
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="1500">
+    <meta property="og:image:alt" content="Екатерина и Андрей">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Екатерина и Андрей · 20.08.2026">
     <meta name="twitter:description" content="С радостью приглашаем вас разделить с нами наш свадебный день — 20 августа 2026.">
@@ -22,36 +26,33 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="image" href="figma-export/processed/hero-frame.webp" fetchpriority="high">
+    <link rel="preload" as="font" type="font/woff2" href="fonts/SaintAmourScript.woff2" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- Drifting petals -->
-    <canvas class="petals" aria-hidden="true"></canvas>
-
     <!-- HERO -->
     <section class="hero" id="top">
         <div class="hero__grid">
             <div class="hero__lede">
-                <p class="hero__eyebrow" data-reveal>— Мы женимся —</p>
-                <div class="hero__names">
+                <h1 class="hero__names">
                     <span class="hero__name hero__name--1" data-reveal-name>Екатерина</span>
                     <span class="hero__and" data-reveal-name>и</span>
                     <span class="hero__name hero__name--2" data-reveal-name>Андрей</span>
-                </div>
-                <div class="hero__date" data-reveal>20 августа 2026</div>
-                <p class="hero__invite" data-reveal>С радостью приглашаем вас разделить с нами один из самых важных дней в нашей жизни <em>— наш свадебный день!</em></p>
+                </h1>
             </div>
 
             <figure class="hero__frame" data-reveal="mask">
-                <img src="figma-export/processed/hero-kiss.jpg" alt="Екатерина и Андрей">
+                <img src="figma-export/processed/hero-frame.webp" width="573" height="865" fetchpriority="high" alt="Екатерина и Андрей">
             </figure>
-        </div>
 
-        <a class="scroll-cue" href="#location" aria-label="Листать вниз">
-            <span class="scroll-cue__line"></span>
-        </a>
+            <div class="hero__meta">
+                <div class="hero__date" data-reveal>20 августа 2026</div>
+                <p class="hero__invite" data-reveal>С радостью приглашаем вас разделить с нами один из самых важных дней в нашей жизни<br><em>— наш свадебный день!</em></p>
+            </div>
+        </div>
     </section>
 
     <!-- LOCATION -->
@@ -62,12 +63,13 @@
         <span class="corner corner--br"></span>
 
         <div class="location__grid">
+            <h2 class="heading heading--script heading--cream location__title" data-reveal>Локация</h2>
+
             <figure class="location__photo" data-reveal="mask" data-parallax="0.06">
-                <img src="figma-export/venue-photo.jpg" alt="Особняк Балинского" loading="lazy" decoding="async">
+                <img src="figma-export/venue-photo.webp" width="428" height="618" alt="Особняк Балинского" loading="lazy" decoding="async">
             </figure>
 
             <div class="location__info">
-                <h2 class="heading heading--script heading--cream" data-reveal>Локация</h2>
                 <h3 class="location__venue" data-reveal>Особняк Балинского</h3>
                 <p class="location__address" data-reveal>Санкт-Петербург,<br>Пироговская набережная, 7</p>
                 <div class="location__actions" data-reveal>
@@ -79,7 +81,7 @@
 
     <!-- TIMELINE -->
     <section class="timeline" id="timeline">
-        <h2 class="heading heading--script" data-reveal>Тайминг</h2>
+        <h2 class="heading heading--script timeline__title-heading" data-reveal>Тайминг</h2>
 
         <div class="timeline__track">
             <span class="timeline__line" data-reveal></span>
@@ -107,10 +109,8 @@
         </div>
 
         <div class="timeline__illustration" data-reveal data-parallax="0.05">
-            <img src="figma-export/processed/timeline-table.png" alt="" loading="lazy" decoding="async">
+            <img src="figma-export/processed/timeline-table.webp" width="806" height="646" alt="" loading="lazy" decoding="async">
         </div>
-
-        <a class="btn btn--outline timeline__cal" id="calBtn" type="button" data-reveal href="#">Добавить в календарь</a>
     </section>
 
     <!-- DRESSCODE -->
@@ -124,7 +124,7 @@
             <p class="dresscode__text" data-reveal>Мы будем рады, если вы выберете в своих образах пастельные, мягкие оттенки без ярких принтов — это поможет создать лёгкую и гармоничную атмосферу праздника!</p>
             <div class="dresscode__palette" data-reveal>
                 <div class="dresscode__doily">
-                    <img src="figma-export/processed/doily.png" alt="" class="dresscode__doily-img" loading="lazy" decoding="async">
+                    <img src="figma-export/processed/doily.webp" width="318" height="448" alt="" class="dresscode__doily-img" loading="lazy" decoding="async">
                     <div class="dresscode__doily-content">
                         <span class="dresscode__palette-label">Палитра</span>
                         <div class="dresscode__colors">
@@ -144,7 +144,8 @@
 
     <!-- DETAILS / GIFTS -->
     <section class="details" id="details">
-        <img src="figma-export/processed/gifts-flowers.png" alt="" class="details__decor" data-parallax="0.08" loading="lazy" decoding="async">
+        <img src="figma-export/processed/details-envelope.png" width="171" height="120" alt="" class="details__decor details__decor--left" loading="lazy" decoding="async">
+        <img src="figma-export/processed/details-bouquet.png" width="162" height="208" alt="" class="details__decor details__decor--right" loading="lazy" decoding="async">
         <h2 class="heading heading--script" data-reveal>Детали</h2>
         <div class="details__gift-text" data-reveal>
             <p>Ваше присутствие — уже самый лучший подарок для нас! Но если вы всё же захотите сделать нам приятное, мы будем искренне рады вашему вкладу в бюджет нашей молодой семьи.</p>
@@ -160,12 +161,11 @@
         <div class="rsvp__frame" data-reveal>
             <div class="rsvp__inner">
                 <p class="rsvp__text">Будем искренне рады видеть вас на нашем празднике! Чтобы мы могли учесть все ваши пожелания по меню и сделать вечер максимально комфортным для каждого, пожалуйста, ответьте на несколько коротких вопросов в нашей анкете.</p>
-                <a href="#" class="btn btn--outline">Заполнить анкету</a>
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSdm2tJXeFiwP_5pgLME3xBx1v6YQiN__zMOVuX39Faj-zO6Ew/viewform" target="_blank" rel="noopener" class="btn btn--outline">Заполнить анкету</a>
                 <div class="rsvp__organizer">
                     <p>По всем вопросам обращайтесь к нашему организатору Дарье — она с радостью вам поможет!</p>
                     <div class="rsvp__contact-btns">
-                        <a href="#" class="btn btn--outline btn--sm">Написать в тг</a>
-                        <a href="tel:" class="btn btn--outline btn--sm">Позвонить</a>
+                        <a href="https://t.me/saharovaevent" target="_blank" rel="noopener" class="btn btn--outline btn--sm">Написать в тг</a>
                     </div>
                 </div>
             </div>

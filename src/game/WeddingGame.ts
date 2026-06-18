@@ -47,10 +47,12 @@ const T_CREAM = '#f3e6d2';
 const T_GOLD = '#ecc079';
 const T_PINK = '#eca8bb';
 
+// Kaya scrolls in with the world, peeking from behind a cover object.
+// dx = her x offset from the cover (which side she peeks); both scroll together.
 const KAYA_SPOTS = [
-  { x: 336, yOffset: 0, alpha: 0.94, cover: 'furniture/plant', coverH: 92, coverX: 312, coverYOffset: 0, tap: { x: 336, yOffset: 28, w: 74, h: 66 } },
-  { x: 332, yOffset: 0, alpha: 0.94, cover: 'obstacles/bollard', coverH: 58, coverX: 312, coverYOffset: 0, tap: { x: 332, yOffset: 26, w: 70, h: 60 } },
-  { x: 280, yOffset: 0, alpha: 0.94, cover: 'decor/flower-box', coverH: 62, coverX: 342, coverYOffset: 0, tap: { x: 286, yOffset: 24, w: 104, h: 56 } },
+  { cover: 'furniture/plant', coverH: 92, dx: 26 },
+  { cover: 'obstacles/bollard', coverH: 58, dx: 22 },
+  { cover: 'decor/flower-box', coverH: 64, dx: -44 },
 ] as const;
 
 export type GameController = {
@@ -113,6 +115,79 @@ function bgKeyFor(name: string) {
   if (name === 'room') return 'bg-room';
   if (name === 'rain') return 'bg-rain';
   return 'bg-embankment';
+}
+
+/* ------------------------------------------------------------------ *
+ *  Safe-area framing. The canvas fills the whole screen, so the island
+ *  overlaps the top and the toolbar / home indicator overlap the bottom.
+ *  We measure the visible band (visualViewport + env insets) and keep UI
+ *  inside it: static scenes (intro/finale) scroll the whole world up so the
+ *  buttons clear the toolbar while art stays grounded, and pin the top
+ *  cluster (title) down past the island; the runner just nudges its HUD
+ *  down and its skip button up. Re-applied on viewport / chrome changes.
+ * ------------------------------------------------------------------ */
+type Pinned = Phaser.GameObjects.Components.Transform & Phaser.GameObjects.Components.ScrollFactor;
+type Shifted = { obj: { y: number }; baseY: number };
+const shiftItem = (obj: { y: number }): Shifted => ({ obj, baseY: obj.y });
+
+function parsePx(value: string): number {
+  const n = parseFloat(value);
+  return Number.isFinite(n) ? n : 0;
+}
+
+/* visible band of the canvas in game-space px: where the island stops (top) and
+   where the toolbar / home indicator begins (bottom). */
+function viewportBand(scene: Phaser.Scene): { topGame: number; bottomGame: number } {
+  const canvas = scene.game.canvas;
+  const rect = canvas?.getBoundingClientRect();
+  const scale = rect && rect.width > 0 ? rect.width / GAME_WIDTH : 1;
+  const root = getComputedStyle(document.documentElement);
+  const insetTop = parsePx(root.getPropertyValue('--safe-top'));
+  const insetBottom = parsePx(root.getPropertyValue('--safe-bottom'));
+  const top = rect?.top ?? 0;
+  const visibleBottomCss = (window.visualViewport?.height ?? window.innerHeight) - insetBottom;
+  return {
+    topGame: Math.max(0, (insetTop - top) / scale),
+    bottomGame: Math.min(GAME_HEIGHT, (visibleBottomCss - top) / scale),
+  };
+}
+
+function onViewportChange(scene: Phaser.Scene, apply: () => void) {
+  apply();
+  scene.scale.on('resize', apply);
+  const vv = window.visualViewport;
+  vv?.addEventListener('resize', apply);
+  vv?.addEventListener('scroll', apply);
+  scene.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+    scene.scale.off('resize', apply);
+    vv?.removeEventListener('resize', apply);
+    vv?.removeEventListener('scroll', apply);
+  });
+}
+
+/* Static scene: scroll the whole world up so `bottomEdge` clears the toolbar, then
+   pin the top cluster (scrollFactor 0) just below the island. Art + buttons move
+   together (camera), so nothing overlaps. */
+function frameStaticScene(scene: Phaser.Scene, topItems: Pinned[], topRef: number, bottomEdge: number, topGap = 46, botMargin = 10) {
+  topItems.forEach((it) => it.setScrollFactor(0));
+  const bases = topItems.map((it) => it.y);
+  onViewportChange(scene, () => {
+    const band = viewportBand(scene);
+    scene.cameras.main.setScroll(0, Math.max(0, bottomEdge - (band.bottomGame - botMargin)));
+    const topShift = Math.max(0, band.topGame + topGap - topRef);
+    topItems.forEach((it, i) => (it.y = bases[i] + topShift));
+  });
+}
+
+/* Runner: nudge the HUD down past the island and the skip button up past the toolbar. */
+function frameRunner(scene: Phaser.Scene, topItems: Shifted[], topRef: number, botItems: Shifted[], botRef: number, margin = 10) {
+  onViewportChange(scene, () => {
+    const band = viewportBand(scene);
+    const topShift = Math.max(0, band.topGame + margin - topRef);
+    const botShift = Math.max(0, botRef - (band.bottomGame - margin));
+    topItems.forEach((it) => (it.obj.y = it.baseY + topShift));
+    botItems.forEach((it) => (it.obj.y = it.baseY - botShift));
+  });
 }
 
 function scaleTo(img: Phaser.GameObjects.Image, h: number) {
@@ -252,8 +327,24 @@ export function mountWeddingGame(parent: HTMLElement): GameController {
   };
   const game = new Phaser.Game(config);
   game.registry.set('wedding', wedding);
+
+  // iOS browsers (notably Arc, whose toolbar floats over the page) resize the
+  // visual viewport when chrome shows/hides without always firing a window
+  // 'resize'. Without refreshing, Phaser's cached canvas bounds go stale and
+  // pointer hits land off-target — making buttons near the toolbar untappable.
+  const refresh = () => game.scale.refresh();
+  const vv = window.visualViewport;
+  vv?.addEventListener('resize', refresh);
+  vv?.addEventListener('scroll', refresh);
+  window.addEventListener('orientationchange', refresh);
+
   return {
-    destroy: () => game.destroy(true),
+    destroy: () => {
+      vv?.removeEventListener('resize', refresh);
+      vv?.removeEventListener('scroll', refresh);
+      window.removeEventListener('orientationchange', refresh);
+      game.destroy(true);
+    },
     pause: () => game.loop.sleep(),
     resume: () => game.loop.wake(),
   };
@@ -289,6 +380,8 @@ class BootScene extends Phaser.Scene {
     ].forEach((k) => this.load.image(k, `${GAME_ASSETS}/characters/${k}.png`));
     this.load.image('sign-katya', `${GAME_ASSETS}/props/sign-katya.png`);
     this.load.image('paw-icon', `${GAME_ASSETS}/kaya/paw.png`);
+    // extra Kaya frame for the finale blink animation (tail swish comes later)
+    this.load.image('kaya-sit-blink', `${GAME_ASSETS}/kaya/kaya-sit-blink.png`);
 
     const keys = new Set<string>();
     LEVELS.forEach((l) => {
@@ -468,13 +561,13 @@ class IntroScene extends Phaser.Scene {
     const line1 = titleText(this, 0, 30, 'ПУТЬ', titleSize);
     const line1W = line1.width + heartGap + heartW;
     line1.setX(Math.round(GAME_WIDTH / 2 - line1W / 2));
-    this.add
+    const heart = this.add
       .image(Math.round(line1.x + line1.width + heartGap + heartW / 2), Math.round(line1.y + line1.height / 2), 'ui-heart')
       .setDepth(23)
       .setDisplaySize(heartW, heartH);
     const line2 = titleText(this, 0, 74, 'К КАТЕ', titleSize);
     line2.setX(Math.round(GAME_WIDTH / 2 - line2.width / 2));
-    this.add
+    const subtitle = this.add
       .text(GAME_WIDTH / 2, 120, 'Помоги Андрею добраться\nдо невесты', {
         fontFamily: FONT_BODY,
         fontSize: compact ? '15px' : '16px',
@@ -485,9 +578,12 @@ class IntroScene extends Phaser.Scene {
       .setOrigin(0.5, 0)
       .setDepth(20);
 
-    speechBubble(this, GAME_WIDTH / 2, 198, compact ? 214 : 226, 44);
-    this.add
-      .text(GAME_WIDTH / 2, 196, 'Тапни, чтобы прыгнуть  ↑', { fontFamily: FONT_BODY, fontSize: compact ? '12px' : '13px', color: T_CREAM })
+    const bubble = speechBubble(this, GAME_WIDTH / 2, 198, compact ? 214 : 226, 44);
+    // touch devices tap; pointer-fine (desktop) gets the keyboard hint instead
+    const touch = window.matchMedia?.('(pointer: coarse)').matches ?? true;
+    const jumpHint = touch ? 'Тапни, чтобы прыгнуть  ↑' : 'Пробел, чтобы прыгнуть  ↑';
+    const bubbleText = this.add
+      .text(GAME_WIDTH / 2, 196, jumpHint, { fontFamily: FONT_BODY, fontSize: compact ? '12px' : '13px', color: T_CREAM })
       .setOrigin(0.5)
       .setDepth(20);
 
@@ -495,10 +591,24 @@ class IntroScene extends Phaser.Scene {
       track('start');
       this.scene.start('RunnerScene');
     }, compact ? 16 : 17);
-    pixelButton(this, GAME_WIDTH / 2, INTRO_SKIP_Y, compact ? 176 : 188, compact ? 32 : 34, 'Пропустить игру', 'secondary', () => {
+    const skipH = compact ? 32 : 34;
+    pixelButton(this, GAME_WIDTH / 2, INTRO_SKIP_Y, compact ? 176 : 188, skipH, 'Пропустить игру', 'secondary', () => {
       track('skip', { from: 'intro' });
       this.scene.start('FinaleScene');
     }, compact ? 11 : 12).setAlpha(0.8);
+
+    // keyboard players can't tab to the canvas buttons → Enter / Space starts the run
+    this.input.keyboard?.addCapture(['SPACE', 'ENTER']); // don't let Space scroll the page
+    const startByKey = () => {
+      track('start');
+      this.scene.start('RunnerScene');
+    };
+    this.input.keyboard?.on('keydown-ENTER', startByKey);
+    this.input.keyboard?.on('keydown-SPACE', startByKey);
+
+    // full-screen canvas → pin the title block below the island; the couple, signpost
+    // and buttons scroll up together so the buttons clear the toolbar (no overlap).
+    frameStaticScene(this, [line1, heart, line2, subtitle, bubble, bubbleText], 30, INTRO_SKIP_Y + skipH / 2);
   }
 }
 
@@ -515,6 +625,7 @@ class RunnerScene extends Phaser.Scene {
   private onGround = true;
   private holding = false;
   private holdUntil = 0;
+  private jumpQueuedUntil = 0;
   private invulnUntil = 0;
 
   private obstacles: Mover[] = [];
@@ -535,7 +646,6 @@ class RunnerScene extends Phaser.Scene {
   private kayaFound = 0;
   private kaya?: Phaser.GameObjects.Image;
   private kayaCover?: Phaser.GameObjects.Image;
-  private kayaHitArea?: Phaser.Geom.Rectangle;
   private kayaPawTaken = new Set<number>();
 
   private heartText!: Phaser.GameObjects.Text;
@@ -576,6 +686,29 @@ class RunnerScene extends Phaser.Scene {
     this.input.on('pointerdown', (p: Phaser.Input.Pointer) => this.onTap(p));
     this.input.on('pointerup', () => (this.holding = false));
 
+    // Keyboard for desktop play: Space / ↑ / W jump (hold to jump higher, same as
+    // tap-and-hold); Esc / P toggle pause. addCapture stops Space/arrows scrolling
+    // the page. Ignore auto-repeat so a held key doesn't machine-gun jump requests.
+    const kb = this.input.keyboard;
+    if (kb) {
+      kb.addCapture(['SPACE', 'UP', 'DOWN', 'W']);
+      const onJumpKey = (e: KeyboardEvent) => {
+        if (!e.repeat) this.requestJump();
+      };
+      kb.on('keydown-SPACE', onJumpKey);
+      kb.on('keydown-UP', onJumpKey);
+      kb.on('keydown-W', onJumpKey);
+      const releaseHold = () => (this.holding = false);
+      kb.on('keyup-SPACE', releaseHold);
+      kb.on('keyup-UP', releaseHold);
+      kb.on('keyup-W', releaseHold);
+      kb.on('keydown-ESC', () => this.togglePause());
+      kb.on('keydown-P', () => this.togglePause());
+      kb.on('keydown-ENTER', () => {
+        if (this.paused) this.togglePause(); // Enter resumes from the pause menu
+      });
+    }
+
     // dev preview: #runner2 / #runner3 jump straight to a level
     const m = window.location.hash.match(/#runner([123])/);
     const startStage = m ? parseInt(m[1], 10) - 1 : 0;
@@ -589,6 +722,7 @@ class RunnerScene extends Phaser.Scene {
     this.vy = 0;
     this.onGround = true;
     this.holding = false;
+    this.jumpQueuedUntil = 0;
     this.invulnUntil = 0;
     this.obstacles = [];
     this.collectibles = [];
@@ -607,7 +741,6 @@ class RunnerScene extends Phaser.Scene {
     this.registry.set('kayaFound', 0);
     this.kaya = undefined;
     this.kayaCover = undefined;
-    this.kayaHitArea = undefined;
     this.kayaPawTaken = new Set();
     // scene instances are reused across replays — drop stale refs to destroyed emitters
     this.rain = undefined;
@@ -618,23 +751,25 @@ class RunnerScene extends Phaser.Scene {
   /* ---- HUD ---- */
   private buildHud() {
     const compact = isCompactViewport();
-    pixelPanel(this, GAME_WIDTH / 2, 34, compact ? 300 : 316, compact ? 42 : 46, { depth: 20 });
+    const panelH = compact ? 42 : 46;
+    const panel = pixelPanel(this, GAME_WIDTH / 2, 34, compact ? 300 : 316, panelH, { depth: 20 });
     const iconY = 34;
     const hud = { fontFamily: FONT_PIXEL, fontSize: compact ? '10px' : '11px', color: T_CREAM };
-    this.add.image(58, iconY, 'ui-heart').setDepth(21).setDisplaySize(20, 22);
+    const heartIcon = this.add.image(58, iconY, 'ui-heart').setDepth(21).setDisplaySize(20, 22);
     this.heartText = this.add.text(76, iconY, 'x3', hud).setOrigin(0, 0.5).setDepth(21);
-    scaleTo(this.add.image(136, iconY, 'fx/sparkle-1').setDepth(21), 22);
+    const sparkleIcon = scaleTo(this.add.image(136, iconY, 'fx/sparkle-1').setDepth(21), 22);
     this.progressText = this.add.text(152, iconY, '×0', hud).setOrigin(0, 0.5).setDepth(21);
-    scaleTo(this.add.image(210, iconY, 'paw-icon').setDepth(21), 18);
+    const pawIcon = scaleTo(this.add.image(210, iconY, 'paw-icon').setDepth(21), 18);
     this.pawText = this.add.text(226, iconY, '0/3', hud).setOrigin(0, 0.5).setDepth(21);
 
-    pixelButton(this, 330, 34, compact ? 42 : 46, compact ? 34 : 38, 'II', 'secondary', () => this.togglePause(), compact ? 12 : 13);
+    const pauseBtn = pixelButton(this, 330, 34, compact ? 42 : 46, compact ? 34 : 38, 'II', 'secondary', () => this.togglePause(), compact ? 12 : 13);
     const soundBtn = pixelButton(this, 284, 34, compact ? 34 : 36, compact ? 34 : 38, '♪', 'secondary', () => {
       const muted = sfx.toggle();
       soundBtn.setAlpha(muted ? 0.45 : 1);
     }, compact ? 14 : 16);
     soundBtn.setAlpha(sfx.isMuted() ? 0.45 : 1);
-    pixelButton(this, GAME_WIDTH / 2, RUNNER_SKIP_Y, compact ? 240 : 268, compact ? 38 : 42, 'Пропустить игру', 'secondary', () => {
+    const skipH = compact ? 38 : 42;
+    const skipBtn = pixelButton(this, GAME_WIDTH / 2, RUNNER_SKIP_Y, compact ? 240 : 268, skipH, 'Пропустить игру', 'secondary', () => {
       track('skip', { from: `stage_${this.stageIndex + 1}` });
       this.scene.start('FinaleScene');
     }, compact ? 12 : 13);
@@ -674,6 +809,16 @@ class RunnerScene extends Phaser.Scene {
       .setDepth(25)
       .setVisible(false);
 
+    frameRunner(
+      this,
+      // includes revealText so the stage-start schedule panel (drawn at revealText.y
+      // via sizeRevealPanel) shifts down with the level title instead of overlapping it
+      [panel, heartIcon, this.heartText, sparkleIcon, this.progressText, pawIcon, this.pawText, pauseBtn, soundBtn, this.stageTitle, this.objectiveText, this.revealText].map(shiftItem),
+      34 - panelH / 2,
+      [shiftItem(skipBtn)],
+      RUNNER_SKIP_Y + skipH / 2,
+    );
+
     this.updateHud();
   }
 
@@ -702,12 +847,32 @@ class RunnerScene extends Phaser.Scene {
   /* ---- input ---- */
   private onTap(p: Phaser.Input.Pointer) {
     if (this.paused) return;
-    if (this.kaya && (this.kaya.getBounds().contains(p.x, p.y) || this.kayaHitArea?.contains(p.x, p.y))) {
-      this.findKaya();
-      return;
+    if (this.kaya?.active) {
+      const b = this.kaya.getBounds();
+      const pad = 18; // forgiving tap target for the small, moving cat
+      if (p.x >= b.x - pad && p.x <= b.right + pad && p.y >= b.y - pad && p.y <= b.bottom + pad) {
+        this.findKaya();
+        return;
+      }
     }
     if (p.y < HUD_GUARD_Y) return;
-    this.jump();
+    this.requestJump();
+  }
+
+  /* Jump buffer: remember a jump press for a short window and fire it the moment
+     the player is grounded. A tap landing just before touchdown still jumps,
+     instead of being silently dropped (which read as unresponsive controls). */
+  private requestJump() {
+    if (this.paused) return;
+    this.jumpQueuedUntil = this.time.now + 130;
+    this.tryJump();
+  }
+
+  private tryJump() {
+    if (this.onGround && this.time.now <= this.jumpQueuedUntil) {
+      this.jumpQueuedUntil = 0;
+      this.jump();
+    }
   }
 
   private jump() {
@@ -724,6 +889,7 @@ class RunnerScene extends Phaser.Scene {
 
   /* ---- stages ---- */
   private setStage(index: number) {
+    const isTransition = this.stageIndex >= 0; // a real location change, not the first stage
     this.clearMovers(); // no cross-level bleed (e.g. a car drifting into the embankment)
     this.stageIndex = index;
     this.stageCollects = 0;
@@ -738,10 +904,14 @@ class RunnerScene extends Phaser.Scene {
     refitBackground(this, this.bg, {
       groundY: this.groundY,
       zoom: level.backgroundZoom ?? 1,
+      offsetY: (level as { backgroundOffsetY?: number }).backgroundOffsetY ?? 0,
     });
     const tint = hexTint(level.tint);
     if (tint !== undefined) this.bg.setTint(tint);
     else this.bg.clearTint();
+
+    // soft flash smooths the abrupt switch to a new location
+    if (isTransition && !prefersReducedMotion()) this.cameras.main.flash(320, 248, 242, 228);
 
     // rain overlay
     if (level.rain && !this.rain && !prefersReducedMotion()) {
@@ -804,7 +974,11 @@ class RunnerScene extends Phaser.Scene {
       });
     });
 
-    this.placeKaya();
+    this.kaya?.destroy();
+    this.kayaCover?.destroy();
+    this.kaya = undefined;
+    this.kayaCover = undefined;
+    this.scheduleKaya();
     this.updateHud();
     this.updateObjective();
 
@@ -877,8 +1051,17 @@ class RunnerScene extends Phaser.Scene {
     extras.forEach((entry, i) => this.spawnDecorEntry(entry, 190 + i * 94));
   }
 
+  /* Phaser doesn't auto-remove tweens when a target is destroyed, so the looping
+     ambient tweens (sway / glow pulse / cloud bob) would keep ticking on dead
+     objects after culling — wasted work that piles up over a run. Kill them first. */
+  private killMoverTweens(m: Mover) {
+    this.tweens.killTweensOf(m.obj);
+    if (m.glow) this.tweens.killTweensOf(m.glow);
+  }
+
   private clearMovers() {
     [...this.decor, ...this.obstacles, ...this.collectibles].forEach((m) => {
+      this.killMoverTweens(m);
       m.glow?.destroy();
       if (m.obj.active) m.obj.destroy();
     });
@@ -887,22 +1070,48 @@ class RunnerScene extends Phaser.Scene {
     this.collectibles = [];
   }
 
-  private placeKaya() {
-    this.kaya?.destroy();
-    this.kayaCover?.destroy();
-    this.kaya = undefined;
-    this.kayaCover = undefined;
-    this.kayaHitArea = undefined;
+  /* schedule Kaya to drift in from the right; retries through the stage until found */
+  private scheduleKaya() {
     if (this.kayaPawTaken.has(this.stageIndex)) return;
+    const stage = this.stageIndex;
+    this.time.delayedCall(Phaser.Math.Between(2400, 4200), () => {
+      if (this.stageIndex !== stage || this.kayaPawTaken.has(stage) || this.kaya) return;
+      this.spawnKaya();
+    });
+  }
+
+  private spawnKaya() {
     const k = LEVELS[this.stageIndex].kaya;
     const spot = KAYA_SPOTS[this.stageIndex] ?? KAYA_SPOTS[0];
-    this.kaya = this.add.image(spot.x, this.groundY - spot.yOffset, k.texture).setOrigin(0.5, 1).setDepth(6).setAlpha(spot.alpha);
+    const baseX = GAME_WIDTH + 90;
+    this.kayaCover = this.add.image(baseX, this.groundY, spot.cover).setOrigin(0.5, 1).setDepth(7);
+    scaleTo(this.kayaCover, spot.coverH);
+    this.kaya = this.add.image(baseX + spot.dx, this.groundY, k.texture).setOrigin(0.5, 1).setDepth(6);
     scaleTo(this.kaya, k.h);
     this.kaya.setInteractive({ useHandCursor: true });
-    ambientLoop(this, { targets: this.kaya, y: this.kaya.y - 4, yoyo: true, repeat: -1, duration: 1500, ease: 'Sine.easeInOut' });
-    this.kayaCover = this.add.image(spot.coverX, this.groundY - spot.coverYOffset, spot.cover).setOrigin(0.5, 1).setDepth(7);
-    scaleTo(this.kayaCover, spot.coverH);
-    this.kayaHitArea = new Phaser.Geom.Rectangle(spot.tap.x - spot.tap.w / 2, this.groundY - spot.tap.yOffset - spot.tap.h / 2, spot.tap.w, spot.tap.h);
+  }
+
+  private scrollKaya(dt: number) {
+    const d = SPEED * dt;
+    if (this.kaya?.active) {
+      this.kaya.x -= d;
+      if (this.kayaCover?.active) this.kayaCover.x -= d;
+      if (this.kaya.x < -120) {
+        // drifted past untapped — clean up and offer another chance later this stage
+        this.kaya.destroy();
+        this.kayaCover?.destroy();
+        this.kaya = undefined;
+        this.kayaCover = undefined;
+        this.scheduleKaya();
+      }
+    } else if (this.kayaCover?.active) {
+      // Kaya was found; let her cover slide out with the world
+      this.kayaCover.x -= d;
+      if (this.kayaCover.x < -120) {
+        this.kayaCover.destroy();
+        this.kayaCover = undefined;
+      }
+    }
   }
 
   private findKaya() {
@@ -946,12 +1155,16 @@ class RunnerScene extends Phaser.Scene {
     else keepInside(sprite, 6);
     this.decor.push({ obj: sprite, vx: -SPEED, revealWhenInside });
     if (entry.glow) {
+      const isLamp = entry.key.includes('lamp');
       const top = baseY - entry.h;
-      const glowY = entry.key.includes('lamp') ? top + entry.h * 0.16 : baseY - entry.h * 0.5;
+      const glowY = isLamp ? top + entry.h * 0.16 : baseY - entry.h * 0.5;
+      // lamps get a tighter, softer halo — a big ADD-blend ball blooms too hard on the dark level 2
+      const size = entry.h * (isLamp ? 0.6 : 1.05);
+      const baseA = isLamp ? 0.24 : 0.42;
+      const peakA = isLamp ? 0.38 : 0.6;
       const glow = this.add.image(sprite.x, glowY, 'fx/glow').setDepth(3).setBlendMode(Phaser.BlendModes.ADD).setTint(0xffcf8a);
-      glow.setDisplaySize(entry.h * 1.1, entry.h * 1.1).setAlpha(0.5);
-      if (revealWhenInside) glow.setAlpha(0);
-      ambientLoop(this, { targets: glow, alpha: 0.72, yoyo: true, repeat: -1, duration: 1400, ease: 'Sine.easeInOut' });
+      glow.setDisplaySize(size, size).setAlpha(revealWhenInside ? 0 : baseA);
+      ambientLoop(this, { targets: glow, alpha: peakA, yoyo: true, repeat: -1, duration: 1400, ease: 'Sine.easeInOut' });
       this.decor.push({ obj: glow, vx: -SPEED, revealWhenInside });
     }
   }
@@ -964,8 +1177,10 @@ class RunnerScene extends Phaser.Scene {
     scaleToMax(img, COLLECTIBLE_SIZE[key] ?? COLLECTIBLE_H);
     img.x = GAME_WIDTH + img.displayWidth / 2 + 18;
     img.setAlpha(0);
-    // soft halo + gentle sway make pickups read as collectible treasures
-    const halo = Math.max(img.displayWidth, img.displayHeight) * 1.8;
+    // soft halo + gentle sway make pickups read as collectible treasures.
+    // dark levels (rain/dusk) bloom harder under ADD blend → tighter, dimmer halo there
+    const dark = this.stageIndex >= 1;
+    const halo = Math.max(img.displayWidth, img.displayHeight) * (dark ? 1.55 : 1.8);
     const glow = this.add
       .image(img.x, y, 'fx/glow')
       .setDepth(6)
@@ -973,7 +1188,7 @@ class RunnerScene extends Phaser.Scene {
       .setTint(0xfff0bf)
       .setDisplaySize(halo, halo)
       .setAlpha(0);
-    ambientLoop(this, { targets: glow, alpha: 0.55, yoyo: true, repeat: -1, duration: 820, ease: 'Sine.easeInOut' });
+    ambientLoop(this, { targets: glow, alpha: dark ? 0.32 : 0.55, yoyo: true, repeat: -1, duration: 820, ease: 'Sine.easeInOut' });
     ambientLoop(this, { targets: img, angle: 7, yoyo: true, repeat: -1, duration: 1500, ease: 'Sine.easeInOut' });
     this.collectibles.push({ obj: img, vx: -SPEED, revealWhenInside: true, glow });
   }
@@ -988,6 +1203,12 @@ class RunnerScene extends Phaser.Scene {
     scaleTo(img, entry.h);
     img.x = GAME_WIDTH + img.displayWidth / 2 + 24;
     img.setAlpha(0);
+    // Floating air obstacles (clouds) bob to read as airborne, not static. Bob only
+    // *upward* from the spawn line so the lowest point never drops below rest — the
+    // "run under it, don't jump" path stays exactly as safe as before. tryHit reads
+    // the live y each frame, so the hitbox follows the bob for free. moveAndCull
+    // only drives x, so this y-tween doesn't fight it.
+    if (air) ambientLoop(this, { targets: img, y: y - 18, yoyo: true, repeat: -1, duration: 1500, ease: 'Sine.easeInOut' });
     this.obstacles.push({ obj: img, vx: -(SPEED + 12 + this.stageIndex * 8), cloud: air, revealWhenInside: true });
   }
 
@@ -1005,10 +1226,19 @@ class RunnerScene extends Phaser.Scene {
       this.pauseLayer.destroy();
       this.pauseLayer = undefined;
       this.paused = false;
+      // resume scene timers + in-flight tweens frozen on pause
+      this.time.paused = false;
+      this.tweens.resumeAll();
       track('resume', { stage: this.stageIndex + 1 });
       return;
     }
     this.paused = true;
+    // update() bails on `paused`, but delayedCalls (Kaya spawn, reveal/toast
+    // auto-hide, blink) and tweens run on the scene clock — freeze them too so
+    // nothing fires or animates behind the pause overlay. pauseAll() only touches
+    // tweens that exist now, so the pause menu's own button-press tween still plays.
+    this.time.paused = true;
+    this.tweens.pauseAll();
     track('pause', { stage: this.stageIndex + 1 });
     const shade = this.add.rectangle(GAME_WIDTH / 2, GAME_HEIGHT / 2, GAME_WIDTH, GAME_HEIGHT, 0x0b1120, 0.72);
     const panel = makeGraphicsPanel(this, GAME_WIDTH / 2, GAME_HEIGHT / 2, 318, 218);
@@ -1048,6 +1278,7 @@ class RunnerScene extends Phaser.Scene {
       this.player.setTexture(this.vy < 0 ? 'groom-jump' : 'groom-land');
     }
     this.player.y = this.playerY;
+    this.tryJump(); // consume a buffered jump the frame we touch down
     this.player.setAlpha(this.time.now < this.invulnUntil && Math.floor(this.time.now / 80) % 2 ? 0.4 : 1);
 
     // spawn timers
@@ -1076,6 +1307,7 @@ class RunnerScene extends Phaser.Scene {
     this.moveAndCull(this.decor, dt);
     this.moveAndCull(this.collectibles, dt, (m) => this.tryCollect(m));
     this.moveAndCull(this.obstacles, dt, (m) => this.tryHit(m));
+    this.scrollKaya(dt);
     if (this.stageIndex === 2) this.updateObjective();
 
     if (this.elapsed >= STAGE_MS * 3 + FINISH_PAD_MS) this.scene.start('FinaleScene');
@@ -1098,6 +1330,7 @@ class RunnerScene extends Phaser.Scene {
       }
       if (onCheck) onCheck(m);
       if (m.obj.x < -200) {
+        this.killMoverTweens(m);
         m.glow?.destroy();
         m.obj.destroy();
         list.splice(i, 1);
@@ -1120,6 +1353,7 @@ class RunnerScene extends Phaser.Scene {
       if (this.stageIndex === 0 && this.stageCollects === 3) this.showToast('Главное собрано!', 1300);
       sfx.collect();
       this.spawnFx('sparkle', o.x, o.y, 62);
+      this.killMoverTweens(m); // stop the looping sway/glow before the one-shot collect tween
       m.glow?.destroy();
       this.tweens.add({ targets: o, y: o.y - 30, alpha: 0, scale: o.scale * 1.4, duration: 260, onComplete: () => o.destroy() });
       o.setActive(false);
@@ -1167,15 +1401,14 @@ class FinaleScene extends Phaser.Scene {
     if (!prefersReducedMotion()) makePetalEmitter(this).setDepth(5);
     sfx.win();
     track('finish', { kayaFound: (this.registry.get('kayaFound') as number | undefined) ?? 0 });
-    this.add.image(GAME_WIDTH / 2, 566, 'fx/glow').setDepth(4).setBlendMode(Phaser.BlendModes.ADD).setTint(0xffcfb0).setDisplaySize(310, 310).setAlpha(0.42);
-    // couple stand on the warm stone floor of the arch (bg floor ~y633–690)
-    scaleTo(this.add.image(GAME_WIDTH / 2, 662, 'couple-pose').setOrigin(0.5, 1).setDepth(6), 174);
+    this.add.image(GAME_WIDTH / 2, 558, 'fx/glow').setDepth(4).setBlendMode(Phaser.BlendModes.ADD).setTint(0xffcfb0).setDisplaySize(348, 348).setAlpha(0.46);
+    // couple are the hero of the payoff — large, on the warm stone floor of the arch
+    scaleTo(this.add.image(GAME_WIDTH / 2, 662, 'couple-pose').setOrigin(0.5, 1).setDepth(6), 198);
 
-    titleText(this, GAME_WIDTH / 2, 42, 'ТЫ ДОБРАЛСЯ!', 21, true);
-    this.spawnFinaleSparkles(88, 76);
+    const title = titleText(this, GAME_WIDTH / 2, 42, 'ТЫ ДОБРАЛСЯ!', 21, true);
 
-    pixelPanel(this, GAME_WIDTH / 2, 108, 336, 82, { depth: 18 });
-    this.add
+    const descPanel = pixelPanel(this, GAME_WIDTH / 2, 108, 336, 82, { depth: 18 });
+    const descText = this.add
       .text(GAME_WIDTH / 2, 108, 'А это значит, что ты\nприглашён на нашу свадьбу.', {
         fontFamily: FONT_BODY,
         fontSize: '16px',
@@ -1185,24 +1418,27 @@ class FinaleScene extends Phaser.Scene {
       })
       .setOrigin(0.5)
       .setDepth(20);
+    const pinned: Pinned[] = [title, descPanel, descText];
 
     const kayaFound = (this.registry.get('kayaFound') as number | undefined) ?? 0;
     if (kayaFound >= 3) {
-      pixelPanel(this, GAME_WIDTH / 2, 166, 318, 46, { depth: 18, alpha: 0.9 });
-      this.add
-        .text(GAME_WIDTH / 2, 166, 'Кая одобрила твоё приглашение', {
+      const pawPanel = pixelPanel(this, GAME_WIDTH / 2, 162, 252, 38, { depth: 18, alpha: 0.9 });
+      const pawIcon = scaleTo(this.add.image(GAME_WIDTH / 2 - 100, 162, 'paw-icon').setDepth(20), 16);
+      const pawCaption = this.add
+        .text(GAME_WIDTH / 2 + 12, 162, 'Кая одобрила приглашение', {
           fontFamily: FONT_BODY,
-          fontSize: '14px',
+          fontSize: '13px',
           color: T_GOLD,
           align: 'center',
         })
         .setOrigin(0.5)
         .setDepth(20);
-      scaleTo(this.add.image(262, 664, 'kaya-sit').setOrigin(0.5, 1).setDepth(7), 46);
-      this.spawnFinaleSparkles(86, 206);
+      const kaya = scaleTo(this.add.image(272, 664, 'kaya-sit').setOrigin(0.5, 1).setDepth(7), 54);
+      this.idleKaya(kaya);
+      pinned.push(pawPanel, pawIcon, pawCaption);
     }
 
-    pixelPanel(this, GAME_WIDTH / 2, 706, 298, 48, { depth: 18, alpha: 0.92 });
+    // plain caption (no panel) like the intro subtitle; a soft shadow keeps it legible over the floor
     this.add
       .text(GAME_WIDTH / 2, 706, 'Дата, маршрут, дресс-код\nи анкета — внутри.', {
         fontFamily: FONT_BODY,
@@ -1212,7 +1448,8 @@ class FinaleScene extends Phaser.Scene {
         lineSpacing: 3,
       })
       .setOrigin(0.5)
-      .setDepth(20);
+      .setDepth(20)
+      .setShadow(0, 2, '#0b1120', 5, false, true);
     const invite = pixelButton(this, GAME_WIDTH / 2, 762, 326, 52, 'Открыть приглашение', 'primary', () => openLanding('Открыть приглашение'), 16).setAlpha(0);
     const replay = pixelButton(this, GAME_WIDTH / 2, 816, 196, 34, 'Сыграть ещё раз', 'secondary', () => {
       track('replay');
@@ -1225,12 +1462,51 @@ class FinaleScene extends Phaser.Scene {
     this.time.delayedCall(760, () => {
       this.tweens.add({ targets: replay, alpha: 0.8, y: replay.y - 3, duration: 260, ease: 'Sine.easeOut' });
     });
+
+    // keyboard players can't tab to the canvas buttons → Enter / Space opens the invite
+    this.input.keyboard?.addCapture(['SPACE', 'ENTER']); // don't let Space scroll the page
+    this.input.keyboard?.on('keydown-ENTER', () => openLanding('Открыть приглашение'));
+    this.input.keyboard?.on('keydown-SPACE', () => openLanding('Открыть приглашение'));
+
+    // full-screen canvas → pin the heading below the island; the couple, caption and
+    // buttons scroll up together so the buttons clear the toolbar (no overlap).
+    frameStaticScene(this, pinned, 31, 816 + 34 / 2);
+
+    // sparkles sit on the (now-shifted) heading panel — anchor to its current y and
+    // pin them (scrollFactor 0) so they don't drift up with the heading shift / camera.
+    this.spawnFinaleSparkles(88, descText.y - 32);
+  }
+
+  /* Kaya idle loop: mostly still, with the occasional blink. The blink frame shares
+     the same body/anchor as the sit frame, so only the eyes appear to move. */
+  private idleKaya(cat: Phaser.GameObjects.Image) {
+    const set = (key: string, ms: number, then: () => void) => {
+      this.time.delayedCall(ms, () => {
+        if (!cat.active) return;
+        cat.setTexture(key);
+        then();
+      });
+    };
+    const blink = (done: () => void) => {
+      set('kaya-sit-blink', 0, () => set('kaya-sit', 130, () => {
+        // ~1 in 3 blinks is a double blink
+        if (Phaser.Math.Between(0, 2) === 0) set('kaya-sit-blink', 110, () => set('kaya-sit', 120, done));
+        else done();
+      }));
+    };
+    const loop = () => {
+      this.time.delayedCall(Phaser.Math.Between(2200, 4200), () => {
+        if (!cat.active) return;
+        blink(loop);
+      });
+    };
+    loop();
   }
 
   private spawnFinaleSparkles(startX: number, startY: number) {
     for (let i = 0; i < 6; i += 1) {
       this.time.delayedCall(i * 140, () => {
-        const fx = this.add.sprite(startX + i * 42, startY + (i % 2) * 28, 'fx/sparkle-1').setDepth(26).setScale(0.42);
+        const fx = this.add.sprite(startX + i * 42, startY + (i % 2) * 28, 'fx/sparkle-1').setDepth(26).setScale(0.42).setScrollFactor(0);
         fx.play('fx-sparkle');
         fx.once('animationcomplete', () => fx.destroy());
       });
@@ -1281,14 +1557,17 @@ function addSceneBackground(scene: Phaser.Scene, key: string) {
   return bg;
 }
 
-function refitBackground(scene: Phaser.Scene, bg: Phaser.GameObjects.Image, opts: { groundY?: number; zoom?: number } = {}) {
+function refitBackground(scene: Phaser.Scene, bg: Phaser.GameObjects.Image, opts: { groundY?: number; zoom?: number; offsetY?: number } = {}) {
   // Zoom in anchored to the canvas bottom: this raises the floor and crops the
   // empty upper wall/sky, so the action sits higher and the middle reads denser.
+  // offsetY pushes the whole background down, lowering its floor line (and cropping
+  // the dead wall at the very bottom) so it can match a lower groundY.
   const zoom = opts.zoom ?? 1;
+  const offsetY = opts.offsetY ?? 0;
   const { tex, scale } = coverScale(scene, bg.texture.key);
   const dh = tex.height * scale * zoom;
   bg.setDisplaySize(tex.width * scale * zoom, dh);
-  bg.setPosition(GAME_WIDTH / 2, GAME_HEIGHT - dh / 2);
+  bg.setPosition(GAME_WIDTH / 2, GAME_HEIGHT - dh / 2 + offsetY);
 }
 
 function titleText(scene: Phaser.Scene, x: number, y: number, label: string, size: number, centered = false) {
