@@ -19,7 +19,7 @@ const SPEED = levels.speed;
 const COLLECTIBLE_H = levels.collectibleH;
 
 const GAME_ASSETS = '/assets/game';
-const LANDING_URL = '/main/index.html';
+const LANDING_URL = '/main/';
 const FONT_PIXEL = '"Press Start 2P", ui-monospace, monospace'; // title, HUD, headers (short, blocky)
 const FONT_BODY = '"Rubik", ui-sans-serif, system-ui, sans-serif'; // sentences (readable)
 
@@ -359,7 +359,35 @@ class BootScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.on('loaderror', () => emitGameEvent('error', { reason: 'asset-load' }));
+    // A single flaky asset must NOT kill the whole game. Some mobile browsers
+    // (e.g. Yandex Browser's Turbo/data-saver proxy, or built-in ad-blockers)
+    // intermittently drop a request. Collect failures, retry them once with a
+    // cache-buster, and only hard-fail if a *critical* texture is still missing
+    // after the retry — otherwise let the game run and degrade gracefully.
+    const failures = new Map<string, string>();
+    let retried = false;
+    this.load.on('loaderror', (file: Phaser.Loader.File) => {
+      failures.set(file.key, typeof file.url === 'string' ? file.url : assetUrl(file.key));
+    });
+    this.load.on('complete', () => {
+      if (failures.size === 0) return;
+      if (!retried) {
+        retried = true;
+        const entries = [...failures];
+        failures.clear();
+        entries.forEach(([key, url]) => {
+          const bust = `${url}${url.includes('?') ? '&' : '?'}retry=${Date.now()}`;
+          this.load.image(key, bust);
+        });
+        this.load.start();
+        return;
+      }
+      const stillFailed = [...failures.keys()];
+      const critical = stillFailed.some(
+        (k) => k.startsWith('bg-') || k.startsWith('groom-') || k.startsWith('bride-'),
+      );
+      if (critical) emitGameEvent('error', { reason: 'asset-load', failed: stillFailed.join(',') });
+    });
     this.load.image('bg-room', `${GAME_ASSETS}/backgrounds/level1_room.webp`);
     this.load.image('bg-rain', `${GAME_ASSETS}/backgrounds/level2_rain.webp`);
     this.load.image('bg-embankment', `${GAME_ASSETS}/backgrounds/level3_embankment.webp`);

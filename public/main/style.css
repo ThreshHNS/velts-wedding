@@ -42,6 +42,10 @@ html {
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
     overflow-x: hidden;
+    overscroll-behavior-y: none;
+    /* Fills the iOS Safari overscroll gutters (top + bottom safe-area under the
+       browser bar) with the first section's background instead of body's. */
+    background: var(--paper-hero);
 }
 
 body {
@@ -49,6 +53,7 @@ body {
     color: var(--ink);
     background: var(--paper);
     overflow-x: hidden;
+    overscroll-behavior-y: none;
 }
 
 img { display: block; max-width: 100%; height: auto; }
@@ -195,7 +200,9 @@ a:focus-visible,
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 28px 24px;
+    /* viewport-fit=cover lets the hero bg fill behind the Dynamic Island;
+       add the inset back as padding so the names clear it. */
+    padding: calc(28px + env(safe-area-inset-top)) 24px 28px;
     background: var(--paper-hero);
     position: relative;
 }
@@ -268,7 +275,7 @@ a:focus-visible,
     color: var(--ink-soft);
     line-height: 1.85;
     max-width: 440px;
-    margin: 0 38px 30px;
+    margin: 0 18px 30px;
 }
 .hero__invite em { color: var(--ink); font-weight: 600; }
 
@@ -410,6 +417,7 @@ a:focus-visible,
     line-height: 1.7;
     max-width: 360px;
     margin: 0 auto;
+    white-space: pre-line;
 }
 
 .timeline__item + .timeline__item::before {
@@ -525,7 +533,7 @@ a:focus-visible,
 /* ============ DETAILS ============ */
 .details {
     --details-envelope-width: clamp(152px, 26vw, 450px);
-    --details-bouquet-width: clamp(300px, 74vw, 440px);
+    --details-bouquet-width: clamp(250px, 54vw, 440px);
     padding: 60px 24px;
     width: 100%;
     max-width: none;
@@ -548,10 +556,10 @@ a:focus-visible,
     transform: translateX(-24%) rotate(20deg);
 }
 .details__decor--right {
-    top: 360px;
+    top: 420px;
     right: 0;
     width: var(--details-bouquet-width);
-    transform: translateX(55%);
+    transform: translateX(45%) rotate(-25deg);
 }
 
 .details > :not(.details__decor) {
@@ -571,10 +579,13 @@ a:focus-visible,
     color: var(--ink);
     margin: 0 auto;
 }
-.details__gift-text p { max-width: min(384px, calc(100% - 108px)); }
+.details__gift-text p {
+    max-width: min(384px, calc(100% - 78px));
+    white-space: pre-line;
+}
 .details__flowers-text p {
     color: var(--ink-soft);
-    max-width: min(358px, calc(100% - 134px));
+    max-width: min(358px, calc(100% - 78px));
 }
 
 /* ============ RSVP ============ */
@@ -586,15 +597,23 @@ a:focus-visible,
 
 .rsvp__frame {
     position: relative;
-    padding: clamp(74px, 17vw, 104px) clamp(40px, 9vw, 64px) clamp(168px, 42vw, 232px);
+    padding: clamp(120px, 30vw, 172px) clamp(40px, 11vw, 64px);
     text-align: center;
-    background-image: url('figma-export/processed/rsvp-ribbon-frame-custom.png');
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: 100% 100%;
 }
 
-.rsvp__inner { max-width: 333px; margin: 0 auto; }
+/* Diagonal corner ribbons (top-left + bottom-right) instead of a full frame. */
+.rsvp__ribbon {
+    position: absolute;
+    width: clamp(168px, 50vw, 290px);
+    height: auto;
+    pointer-events: none;
+    opacity: 0.85;
+    z-index: 0;
+}
+.rsvp__ribbon--tl { top: clamp(6px, 12vw, 92px); left: clamp(2px, -18vw, 16px); }
+.rsvp__ribbon--br { bottom: clamp(6px, 12vw, 92px); right: clamp(2px, -18vw, 16px); transform: rotate(180deg); }
+
+.rsvp__inner { position: relative; z-index: 1; max-width: 320px; margin: 0 auto; }
 
 .rsvp__text {
     font-family: var(--body);
@@ -625,7 +644,9 @@ a:focus-visible,
 /* ============ CLOSING ============ */
 .closing {
     background: var(--taupe);
-    padding: clamp(86px, 20vw, 112px) 24px;
+    /* Extend taupe into the bottom safe-area so there's no light strip under
+       the browser bar / home indicator on the last section. */
+    padding: clamp(86px, 20vw, 112px) 24px calc(clamp(86px, 20vw, 112px) + env(safe-area-inset-bottom));
     text-align: center;
     position: relative;
     overflow: hidden;
@@ -705,18 +726,19 @@ a:focus-visible,
 
     /* Location two-column */
     .location__grid {
-        max-width: 1040px;
+        max-width: 920px;
         display: grid;
-        grid-template-columns: auto 1fr;
+        grid-template-columns: clamp(220px, 22vw, 280px) minmax(340px, 430px);
         grid-template-areas:
             "photo title"
             "photo info";
         align-items: center;
+        justify-content: center;
         column-gap: clamp(40px, 6vw, 80px);
         row-gap: 0;
         text-align: left;
     }
-    .location__photo { grid-area: photo; align-self: center; grid-row: span 2; margin: 0; width: clamp(200px, 22vw, 260px); }
+    .location__photo { grid-area: photo; align-self: center; grid-row: span 2; margin: 0; width: 100%; }
     .location__title { grid-area: title; align-self: end; text-align: left; margin-bottom: 20px; }
     .location__info { grid-area: info; align-self: start; }
     .location__actions { justify-content: flex-start; }
@@ -727,15 +749,19 @@ a:focus-visible,
     .timeline__track {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
-        align-items: start;
+        align-items: stretch;
         padding: 12px 0;
     }
     .timeline__item {
         padding: 8px 22px;
         margin-top: 0;
         text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
     }
     .timeline__item + .timeline__item {
+        margin-top: 0;
         border-left: 1px solid var(--line);
     }
     /* divider was a horizontal rule between stacked items on mobile */

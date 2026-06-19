@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import type { GameController } from './game/WeddingGame';
 
-const LANDING_URL = '/main/index.html';
+const LANDING_URL = '/main/';
 
 export function App() {
   const gameRef = useRef<HTMLDivElement | null>(null);
@@ -18,7 +18,7 @@ export function App() {
       setStatus((current) => (current === 'error' ? 'error' : 'ready'));
     };
     const fail = () => setStatus('error');
-    const timeout = window.setTimeout(fail, 16000);
+    const timeout = window.setTimeout(fail, 30000);
 
     window.addEventListener('wedding-game-ready', ready);
     window.addEventListener('wedding-game-error', fail);
@@ -84,6 +84,9 @@ export function App() {
               {status === 'error' ? (
                 <>
                   <p className="fallback-copy">Не удалось загрузить игру.</p>
+                  <button className="fallback-link" type="button" onClick={() => window.location.reload()}>
+                    Повторить
+                  </button>
                   <a className="fallback-link" href={LANDING_URL}>
                     Открыть приглашение
                   </a>
