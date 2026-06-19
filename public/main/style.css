@@ -53,7 +53,6 @@ body {
     color: var(--ink);
     background: var(--paper);
     overflow-x: hidden;
-    overscroll-behavior-y: none;
 }
 
 img { display: block; max-width: 100%; height: auto; }
@@ -610,8 +609,8 @@ a:focus-visible,
     opacity: 0.85;
     z-index: 0;
 }
-.rsvp__ribbon--tl { top: clamp(6px, 12vw, 92px); left: clamp(2px, -18vw, 16px); }
-.rsvp__ribbon--br { bottom: clamp(6px, 12vw, 92px); right: clamp(2px, -18vw, 16px); transform: rotate(180deg); }
+.rsvp__ribbon--tl { top: clamp(6px, 12vw, 102px); left: clamp(-12px, -28vw, 6px); }
+.rsvp__ribbon--br { bottom: clamp(6px, 12vw, 92px); right: clamp(-12px, -18vw, 16px); transform: rotate(180deg); }
 
 .rsvp__inner { position: relative; z-index: 1; max-width: 320px; margin: 0 auto; }
 

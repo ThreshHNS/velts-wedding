@@ -675,6 +675,7 @@ class RunnerScene extends Phaser.Scene {
   private kaya?: Phaser.GameObjects.Image;
   private kayaCover?: Phaser.GameObjects.Image;
   private kayaPawTaken = new Set<number>();
+  private kayaHintShown = false;
 
   private heartText!: Phaser.GameObjects.Text;
   private progressText!: Phaser.GameObjects.Text;
@@ -770,6 +771,7 @@ class RunnerScene extends Phaser.Scene {
     this.kaya = undefined;
     this.kayaCover = undefined;
     this.kayaPawTaken = new Set();
+    this.kayaHintShown = false;
     // scene instances are reused across replays — drop stale refs to destroyed emitters
     this.rain = undefined;
     this.petals = undefined;
@@ -1117,6 +1119,12 @@ class RunnerScene extends Phaser.Scene {
     this.kaya = this.add.image(baseX + spot.dx, this.groundY, k.texture).setOrigin(0.5, 1).setDepth(6);
     scaleTo(this.kaya, k.h);
     this.kaya.setInteractive({ useHandCursor: true });
+    // First time Kaya appears, tell the player what to do — she's small and easy
+    // to miss, and tapping her (not jumping) is a non-obvious second mechanic.
+    if (!this.kayaHintShown) {
+      this.kayaHintShown = true;
+      this.showToast('Кая спряталась рядом 🐾\nТапни по ней, чтобы найти', 2800);
+    }
   }
 
   private scrollKaya(dt: number) {
@@ -1300,6 +1308,10 @@ class RunnerScene extends Phaser.Scene {
         this.onGround = true;
         this.player.play('run', true);
         this.spawnFx('dust', PLAYER_X - 4, this.groundY, 48);
+        // Bunny-hop: if the jump input is still held on touchdown, chain straight
+        // into another hop so a held tap flows over a run of obstacles. Release to
+        // land and run (needed to pass under the airborne cloud obstacles).
+        if (this.holding) this.jump();
       }
     } else {
       this.onGround = false;
@@ -1392,7 +1404,11 @@ class RunnerScene extends Phaser.Scene {
   private tryHit(m: Mover) {
     if (m.hit || this.time.now < this.invulnUntil) return;
     const o = m.obj;
-    const w = o.displayWidth * 0.5;
+    // Cap hitbox width relative to height so very wide obstacles (the car is
+    // ~2.7:1 → ~160px at h=60) don't get an unclearable box: a tap-jump can't
+    // stay airborne long enough to pass an 80px-wide box. Tall/narrow obstacles
+    // (traffic light, bollard) are unaffected since their width is already small.
+    const w = Math.min(o.displayWidth * 0.5, o.displayHeight * 0.7);
     const h = o.displayHeight * (m.cloud ? 0.5 : 0.6);
     const cy = o.y - o.displayHeight * 0.5;
     const box = new Phaser.Geom.Rectangle(o.x - w / 2, cy - h / 2, w, h);
