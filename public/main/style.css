@@ -240,7 +240,7 @@ a:focus-visible,
     color: var(--ink);
 }
 .hero__name--1 { text-align: left; padding-left: 0.425em; }
-.hero__name--2 { text-align: right; padding-right: 0.5em; margin-top: -0.22em; }
+.hero__name--2 { text-align: right; padding-right: 0.5em; margin-top: 0; }
 
 .hero__and {
     text-align: center;
@@ -248,7 +248,7 @@ a:focus-visible,
     font-size: 24vw;
     line-height: 0.3;
     color: var(--ink);
-    margin: -0.18em 0 -0.14em;
+    margin: -0.18em 0;
     padding: 0;
 }
 
@@ -279,7 +279,7 @@ a:focus-visible,
 .hero__invite em { color: var(--ink); font-weight: 600; }
 
 .hero__frame {
-    width: min(80vw, 320px);
+    width: min(86vw, 360px);
     aspect-ratio: 573 / 865;
 }
 .hero__frame img {
@@ -392,7 +392,7 @@ a:focus-visible,
 
 .timeline__time {
     font-family: var(--display);
-    font-size: clamp(30px, 8vw, 38px);
+    font-size: clamp(32px, 8vw, 42px);
     font-weight: 400;
     color: var(--ink);
     margin-bottom: 10px;
@@ -400,7 +400,7 @@ a:focus-visible,
 
 .timeline__title {
     font-family: var(--display);
-    font-size: 16px;
+    font-size: 17px;
     font-weight: 600;
     letter-spacing: 0.12em;
     text-transform: uppercase;
@@ -410,7 +410,7 @@ a:focus-visible,
 
 .timeline__desc {
     font-family: var(--body);
-    font-size: 17px;
+    font-size: 18px;
     font-style: italic;
     color: var(--ink-soft);
     line-height: 1.7;
@@ -431,7 +431,7 @@ a:focus-visible,
 }
 
 .timeline__illustration {
-    max-width: 300px;
+    max-width: min(86vw, 420px);
     margin: 44px auto 0;
     opacity: 0.92;
 }
@@ -455,7 +455,7 @@ a:focus-visible,
 
 .dresscode__text {
     font-family: var(--body);
-    font-size: 17px;
+    font-size: 19px;
     font-style: italic;
     color: var(--cream-bright);
     line-height: 1.85;
@@ -467,7 +467,7 @@ a:focus-visible,
 .dresscode__doily {
     position: relative;
     display: inline-block;
-    width: clamp(300px, 88vw, 440px);
+    width: clamp(340px, 88vw, 560px);
     aspect-ratio: 448 / 318;
 }
 .dresscode__doily-img {
@@ -491,7 +491,7 @@ a:focus-visible,
 
 .dresscode__palette-label {
     font-family: var(--script);
-    font-size: clamp(52px, 15vw, 82px);
+    font-size: clamp(58px, 15vw, 96px);
     color: var(--taupe);
     line-height: 0.9;
     margin-bottom: 18px;
@@ -505,15 +505,15 @@ a:focus-visible,
 }
 .dresscode__color {
     position: relative;
-    width: clamp(42px, 9.4vw, 52px);
-    height: clamp(42px, 9.4vw, 52px);
+    width: clamp(46px, 9.4vw, 64px);
+    height: clamp(46px, 9.4vw, 64px);
     border-radius: 50%;
     background: var(--c);
     box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08), inset 0 0 0 1px rgba(255, 255, 255, 0.28);
     transition: transform 0.35s ease;
     cursor: pointer;
 }
-.dresscode__color + .dresscode__color { margin-left: clamp(-9px, -1.8vw, -7px); }
+.dresscode__color + .dresscode__color { margin-left: clamp(-13px, -1.8vw, -9px); }
 .dresscode__color:hover { transform: scale(1.25) translateY(-3px); }
 .dresscode__legend {
     margin-top: 30px;
@@ -572,51 +572,51 @@ a:focus-visible,
 .details__gift-text p,
 .details__flowers-text p {
     font-family: var(--body);
-    font-size: 17px;
+    font-size: 19px;
     font-style: italic;
     line-height: 1.85;
     color: var(--ink);
     margin: 0 auto;
 }
 .details__gift-text p {
-    max-width: min(384px, calc(100% - 78px));
+    max-width: min(450px, calc(100% - 78px));
     white-space: pre-line;
 }
 .details__flowers-text p {
     color: var(--ink-soft);
-    max-width: min(358px, calc(100% - 78px));
+    max-width: min(430px, calc(100% - 78px));
 }
 
 /* ============ RSVP ============ */
 .rsvp {
     padding: 60px 24px 96px;
-    max-width: var(--max-w);
+    max-width: min(100%, 760px);
     margin: 0 auto;
 }
 
 .rsvp__frame {
     position: relative;
-    padding: clamp(120px, 30vw, 172px) clamp(40px, 11vw, 64px);
+    padding: clamp(140px, 30vw, 210px) clamp(48px, 11vw, 82px);
     text-align: center;
 }
 
 /* Diagonal corner ribbons (top-left + bottom-right) instead of a full frame. */
 .rsvp__ribbon {
     position: absolute;
-    width: clamp(168px, 50vw, 290px);
+    width: clamp(200px, 50vw, 360px);
     height: auto;
     pointer-events: none;
     opacity: 0.85;
     z-index: 0;
 }
-.rsvp__ribbon--tl { top: clamp(6px, 12vw, 102px); left: clamp(-12px, -28vw, 6px); }
-.rsvp__ribbon--br { bottom: clamp(6px, 12vw, 92px); right: clamp(-12px, -18vw, 16px); transform: rotate(180deg); }
+.rsvp__ribbon--tl { top: clamp(0px, 10vw, 82px); left: clamp(-42px, -20vw, -8px); }
+.rsvp__ribbon--br { bottom: clamp(0px, 10vw, 76px); right: clamp(-42px, -16vw, -6px); transform: rotate(180deg); }
 
-.rsvp__inner { position: relative; z-index: 1; max-width: 320px; margin: 0 auto; }
+.rsvp__inner { position: relative; z-index: 1; max-width: 420px; margin: 0 auto; }
 
 .rsvp__text {
     font-family: var(--body);
-    font-size: 17px;
+    font-size: 19px;
     font-style: italic;
     line-height: 1.85;
     color: var(--ink);
@@ -626,7 +626,7 @@ a:focus-visible,
 .rsvp__organizer { margin-top: 40px; }
 .rsvp__organizer p {
     font-family: var(--body);
-    font-size: 16px;
+    font-size: 18px;
     font-style: italic;
     line-height: 1.7;
     color: var(--ink-soft);
@@ -708,7 +708,7 @@ a:focus-visible,
     .hero__lede { grid-area: lede; align-self: end; text-align: left; max-width: 620px; }
     .hero__names { margin: 0; width: auto; }
     .hero__name { font-size: clamp(80px, 9vw, 140px); }
-    .hero__and { font-size: clamp(60px, 7vw, 92px); line-height: 0.3; padding-left: 1.3em; }
+    .hero__and { font-size: clamp(60px, 7vw, 92px); line-height: 0.3; margin-right: 40px; padding-left: 1.3em; }
     .hero__meta {
         grid-area: meta;
         align-self: start;
@@ -720,7 +720,7 @@ a:focus-visible,
     .hero__frame {
         grid-area: frame;
         align-self: center;
-        width: clamp(300px, 30vw, 390px);
+        width: clamp(360px, 36vw, 470px);
     }
 
     /* Location two-column */
@@ -735,24 +735,25 @@ a:focus-visible,
         justify-content: center;
         column-gap: clamp(40px, 6vw, 80px);
         row-gap: 0;
-        text-align: left;
+        text-align: center;
     }
     .location__photo { grid-area: photo; align-self: center; grid-row: span 2; margin: 0; width: 100%; }
-    .location__title { grid-area: title; align-self: end; text-align: left; margin-bottom: 20px; }
+    .location__title { grid-area: title; align-self: end; text-align: center; margin-bottom: 20px; }
     .location__info { grid-area: info; align-self: start; }
-    .location__actions { justify-content: flex-start; }
+    .location__actions { justify-content: center; }
 
     /* Timeline: four columns in a row */
-    .timeline { max-width: 1000px; }
+    .timeline { max-width: 1120px; }
     .timeline__line { display: none; }
     .timeline__track {
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        align-items: stretch;
+        grid-template-columns: repeat(4, minmax(0, 220px));
+        align-items: start;
+        justify-content: center;
         padding: 12px 0;
     }
     .timeline__item {
-        padding: 8px 22px;
+        padding: 8px 18px;
         margin-top: 0;
         text-align: center;
         display: flex;
@@ -765,8 +766,9 @@ a:focus-visible,
     }
     /* divider was a horizontal rule between stacked items on mobile */
     .timeline__item + .timeline__item::before { display: none; }
-    .timeline__time { font-size: clamp(30px, 3vw, 38px); }
+    .timeline__time { font-size: clamp(36px, 3.3vw, 44px); }
     .timeline__desc { max-width: none; margin: 0; }
+    .timeline__illustration { max-width: clamp(460px, 48vw, 620px); }
 
     /* Details with edge decor */
     .details { max-width: none; }
@@ -778,18 +780,18 @@ a:focus-visible,
     .location__venue { font-size: 18px; }
     .location__address { font-size: 18px; }
 
-    .timeline__time { font-size: 42px; }
-    .timeline__title { font-size: 19px; }
-    .timeline__desc { font-size: 18px; }
+    .timeline__time { font-size: 46px; }
+    .timeline__title { font-size: 20px; }
+    .timeline__desc { font-size: 20px; }
 
-    .dresscode__text { font-size: 19px; max-width: 420px; }
+    .dresscode__text { font-size: 22px; max-width: 520px; }
 
     .details__gift-text p,
-    .details__flowers-text p { font-size: 19px; }
+    .details__flowers-text p { font-size: 22px; }
 
-    .rsvp__text { font-size: 19px; }
-    .rsvp__organizer p { font-size: 17px; }
-    .rsvp__inner { max-width: 370px; }
+    .rsvp__text { font-size: 22px; }
+    .rsvp__organizer p { font-size: 20px; }
+    .rsvp__inner { max-width: 520px; }
 
     .closing__text { font-size: 34px; }
 }
