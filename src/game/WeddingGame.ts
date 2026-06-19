@@ -19,7 +19,7 @@ const SPEED = levels.speed;
 const COLLECTIBLE_H = levels.collectibleH;
 
 const GAME_ASSETS = '/assets/game';
-const LANDING_URL = '/main/';
+const LANDING_URL = '/main/index.html';
 const FONT_PIXEL = '"Press Start 2P", ui-monospace, monospace'; // title, HUD, headers (short, blocky)
 const FONT_BODY = '"Rubik", ui-sans-serif, system-ui, sans-serif'; // sentences (readable)
 

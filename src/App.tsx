@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import type { GameController } from './game/WeddingGame';
 
-const LANDING_URL = '/main/';
+const LANDING_URL = '/main/index.html';
 
 export function App() {
   const gameRef = useRef<HTMLDivElement | null>(null);

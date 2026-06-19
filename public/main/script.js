@@ -10,7 +10,22 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
-    document.querySelectorAll('[data-reveal]').forEach(el => reveal.observe(el));
+    document.querySelectorAll('[data-reveal]:not([data-reveal="mask"])').forEach(el => reveal.observe(el));
+
+    const maskRevealEls = [...document.querySelectorAll('[data-reveal="mask"]')];
+    const revealMasks = () => {
+        const vh = window.innerHeight || document.documentElement.clientHeight;
+        maskRevealEls.forEach(el => {
+            if (el.classList.contains('revealed')) return;
+            const rect = el.getBoundingClientRect();
+            if (rect.top < vh * 0.88 && rect.bottom > vh * 0.08) {
+                el.classList.add('revealed');
+            }
+        });
+    };
+    revealMasks();
+    window.addEventListener('scroll', revealMasks, { passive: true });
+    window.addEventListener('resize', revealMasks);
 
     /* ---------- Corner ornaments ---------- */
     const cornerObserver = new IntersectionObserver((entries) => {
