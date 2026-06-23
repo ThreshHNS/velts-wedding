@@ -611,21 +611,40 @@ class IntroScene extends Phaser.Scene {
       .setOrigin(0.5)
       .setDepth(20);
 
-    pixelButton(this, GAME_WIDTH / 2, INTRO_PRIMARY_Y, compact ? 284 : 300, compact ? 50 : 52, 'Начать путь', 'primary', () => {
+    let introDone = false;
+    const startRun = () => {
+      if (introDone) return;
+      introDone = true;
       track('start');
       this.scene.start('RunnerScene');
-    }, compact ? 16 : 17);
-    const skipH = compact ? 32 : 34;
-    pixelButton(this, GAME_WIDTH / 2, INTRO_SKIP_Y, compact ? 176 : 188, skipH, 'Пропустить игру', 'secondary', () => {
+    };
+    const skipGame = () => {
+      if (introDone) return;
+      introDone = true;
       track('skip', { from: 'intro' });
       this.scene.start('FinaleScene');
-    }, compact ? 11 : 12).setAlpha(0.8);
+    };
+
+    const primaryW = compact ? 284 : 300;
+    const primaryH = compact ? 50 : 52;
+    pixelButton(this, GAME_WIDTH / 2, INTRO_PRIMARY_Y, primaryW, primaryH, 'Начать путь', 'primary', startRun, compact ? 16 : 17);
+    const skipH = compact ? 32 : 34;
+    const skipW = compact ? 176 : 188;
+    pixelButton(this, GAME_WIDTH / 2, INTRO_SKIP_Y, skipW, skipH, 'Пропустить игру', 'secondary', skipGame, compact ? 11 : 12).setAlpha(0.8);
+
+    // Mobile players often tap the picture instead of the CTA; any first tap on
+    // the intro starts the run, except the explicit skip button.
+    this.input.on('pointerdown', (p: Phaser.Input.Pointer) => {
+      const withinSkip =
+        Math.abs(p.x - GAME_WIDTH / 2) <= skipW / 2 &&
+        Math.abs(p.y - INTRO_SKIP_Y) <= skipH / 2;
+      if (!withinSkip) startRun();
+    });
 
     // keyboard players can't tab to the canvas buttons → Enter / Space starts the run
     this.input.keyboard?.addCapture(['SPACE', 'ENTER']); // don't let Space scroll the page
     const startByKey = () => {
-      track('start');
-      this.scene.start('RunnerScene');
+      startRun();
     };
     this.input.keyboard?.on('keydown-ENTER', startByKey);
     this.input.keyboard?.on('keydown-SPACE', startByKey);
