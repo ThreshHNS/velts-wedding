@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wedding game asset gallery</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #10131a;
+      --panel: #181d27;
+      --text: #f1eadf;
+      --muted: #aeb6c5;
+      --bad: #ff5f64;
+      --warn: #ffcc66;
+      --ok: #79d98b;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font: 14px/1.45 ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background: var(--bg);
+    }
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 18px;
+      border-bottom: 1px solid #303746;
+      background: rgba(16, 19, 26, 0.94);
+      backdrop-filter: blur(10px);
+    }
+    h1 { margin: 0; font-size: 18px; }
+    label { color: var(--muted); }
+    select, input {
+      margin-left: 6px;
+      padding: 6px 8px;
+      color: var(--text);
+      border: 1px solid #3a4252;
+      border-radius: 6px;
+      background: #0c1018;
+    }
+    main { padding: 18px; }
+    #summary {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 18px;
+      color: var(--muted);
+    }
+    .pill {
+      padding: 6px 10px;
+      border: 1px solid #303746;
+      border-radius: 999px;
+      background: var(--panel);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      gap: 14px;
+    }
+    .asset {
+      overflow: hidden;
+      border: 1px solid #303746;
+      border-radius: 8px;
+      background: var(--panel);
+    }
+    .asset.bad { border-color: color-mix(in srgb, var(--bad), transparent 20%); }
+    .asset.warn { border-color: color-mix(in srgb, var(--warn), transparent 20%); }
+    .preview {
+      display: grid;
+      place-items: center;
+      min-height: 170px;
+      padding: 10px;
+      background-color: #1f2531;
+      background-image:
+        linear-gradient(45deg, #2a3140 25%, transparent 25%),
+        linear-gradient(-45deg, #2a3140 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #2a3140 75%),
+        linear-gradient(-45deg, transparent 75%, #2a3140 75%);
+      background-position: 0 0, 0 8px, 8px -8px, -8px 0;
+      background-size: 16px 16px;
+    }
+    img {
+      max-width: 100%;
+      max-height: 220px;
+      object-fit: contain;
+      image-rendering: pixelated;
+    }
+    .meta { padding: 10px; }
+    .path {
+      margin-bottom: 8px;
+      overflow-wrap: anywhere;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 12px;
+    }
+    .stats {
+      display: grid;
+      gap: 3px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .flag { color: var(--warn); }
+    .bad .flag { color: var(--bad); }
+    .ok { color: var(--ok); }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Wedding game asset gallery</h1>
+    <div>
+      <label>Источник
+        <select id="source">
+          <option value="local">local</option>
+          <option value="prod">prod</option>
+        </select>
+      </label>
+      <label>Фильтр
+        <input id="filter" placeholder="tree, cloud, decor...">
+      </label>
+      <label>
+        <input id="suspectsOnly" type="checkbox"> только подозрительные
+      </label>
+    </div>
+  </header>
+  <main>
+    <div id="summary"></div>
+    <div id="grid" class="grid"></div>
+  </main>
+  <script type="module">
+    const version = '20260620-asset-audit';
+    const prodBase = 'https://velts-wedding.ru';
+    const assets = [
+      '/assets/game/backgrounds/finale.webp',
+      '/assets/game/backgrounds/intro.webp',
+      '/assets/game/backgrounds/level1_room.webp',
+      '/assets/game/backgrounds/level2_rain.webp',
+      '/assets/game/backgrounds/level3_embankment.webp',
+      '/assets/game/backgrounds/og.jpg',
+      '/assets/game/backgrounds/og.webp',
+      '/assets/game/characters/bride-idle.png',
+      '/assets/game/characters/bride-wave.png',
+      '/assets/game/characters/couple-pose.png',
+      '/assets/game/characters/groom-idle.png',
+      '/assets/game/characters/groom-jump.png',
+      '/assets/game/characters/groom-land.png',
+      '/assets/game/characters/groom-run-1.png',
+      '/assets/game/characters/groom-run-2.png',
+      '/assets/game/characters/groom-run-3.png',
+      '/assets/game/characters/groom-run-4.png',
+      '/assets/game/kaya/kaya-loaf.png',
+      '/assets/game/kaya/kaya-peek.png',
+      '/assets/game/kaya/kaya-run.png',
+      '/assets/game/kaya/kaya-sign.png',
+      '/assets/game/kaya/kaya-sit-blink.png',
+      '/assets/game/kaya/kaya-sit.png',
+      '/assets/game/kaya/kaya-stand.png',
+      '/assets/game/kaya/paw.png',
+      '/assets/game/props/collectible-bouquet.png',
+      '/assets/game/props/collectible-bow.png',
+      '/assets/game/props/collectible-envelope.png',
+      '/assets/game/props/collectible-heart.png',
+      '/assets/game/props/collectible-ring.png',
+      '/assets/game/props/collectible-suit.png',
+      '/assets/game/props/lamp-post.png',
+      '/assets/game/props/obstacle-car.png',
+      '/assets/game/props/obstacle-deadline.png',
+      '/assets/game/props/obstacle-puddle.png',
+      '/assets/game/props/obstacle-rain-cloud.png',
+      '/assets/game/props/obstacle-traffic-light.png',
+      '/assets/game/props/sign-katya.png',
+      '/assets/game/props/string-lights.png',
+      '/assets/game/v3/decor/bush.png',
+      '/assets/game/v3/decor/flower-box.png',
+      '/assets/game/v3/decor/flower-box2.png',
+      '/assets/game/v3/decor/flower-pot.png',
+      '/assets/game/v3/decor/flowers-small.png',
+      '/assets/game/v3/decor/lamp-post.png',
+      '/assets/game/v3/decor/railing.png',
+      '/assets/game/v3/decor/sign-arrow.png',
+      '/assets/game/v3/decor/string-lights.png',
+      '/assets/game/v3/decor/tree.png',
+      '/assets/game/v3/furniture/candle.png',
+      '/assets/game/v3/furniture/dresser.png',
+      '/assets/game/v3/furniture/mirror.png',
+      '/assets/game/v3/furniture/nightstand.png',
+      '/assets/game/v3/furniture/painting.png',
+      '/assets/game/v3/furniture/photo-frame.png',
+      '/assets/game/v3/furniture/plant.png',
+      '/assets/game/v3/furniture/sconce.png',
+      '/assets/game/v3/furniture/shelf.png',
+      '/assets/game/v3/furniture/vase.png',
+      '/assets/game/v3/furniture/wardrobe.png',
+      '/assets/game/v3/fx/dust-1.png',
+      '/assets/game/v3/fx/dust-2.png',
+      '/assets/game/v3/fx/dust-3.png',
+      '/assets/game/v3/fx/dust-4.png',
+      '/assets/game/v3/fx/heart-1.png',
+      '/assets/game/v3/fx/heart-2.png',
+      '/assets/game/v3/fx/heart-3.png',
+      '/assets/game/v3/fx/sparkle-1.png',
+      '/assets/game/v3/fx/sparkle-2.png',
+      '/assets/game/v3/fx/sparkle-3.png',
+      '/assets/game/v3/fx/sparkle-4.png',
+      '/assets/game/v3/obstacles/bollard.png',
+      '/assets/game/v3/obstacles/bricks.png',
+      '/assets/game/v3/obstacles/bush.png',
+      '/assets/game/v3/obstacles/can.png',
+      '/assets/game/v3/obstacles/car.png',
+      '/assets/game/v3/obstacles/drain.png',
+      '/assets/game/v3/obstacles/flower-pot.png',
+      '/assets/game/v3/obstacles/manhole.png',
+      '/assets/game/v3/obstacles/paper-stack.png',
+      '/assets/game/v3/obstacles/puddle-small.png',
+      '/assets/game/v3/obstacles/puddle.png',
+      '/assets/game/v3/obstacles/rain-cloud.png',
+      '/assets/game/v3/obstacles/rock.png',
+      '/assets/game/v3/obstacles/splash.png',
+      '/assets/game/v3/obstacles/traffic-light.png',
+    ];
+
+    const state = { reports: [], source: 'local', filter: '', suspectsOnly: false };
+    const grid = document.querySelector('#grid');
+    const summary = document.querySelector('#summary');
+    const source = document.querySelector('#source');
+    const filter = document.querySelector('#filter');
+    const suspectsOnly = document.querySelector('#suspectsOnly');
+
+    source.addEventListener('change', () => { state.source = source.value; render(); });
+    filter.addEventListener('input', () => { state.filter = filter.value.trim().toLowerCase(); render(); });
+    suspectsOnly.addEventListener('change', () => { state.suspectsOnly = suspectsOnly.checked; render(); });
+
+    function urlFor(path) {
+      const prefix = state.source === 'prod' ? prodBase : '';
+      return `${prefix}${path}?audit=${version}`;
+    }
+
+    function classify(report) {
+      if (report.error) return 'bad';
+      if (report.brightGreen > 50 || report.greenLines > 0) return 'bad';
+      if (report.opaqueBlackRatio > 0.08 && report.alphaTransparentRatio > 0.1) return 'warn';
+      if (report.cornerOpaque > 0) return 'warn';
+      return 'ok';
+    }
+
+    function analyze(img) {
+      const canvas = document.createElement('canvas');
+      canvas.width = img.naturalWidth;
+      canvas.height = img.naturalHeight;
+      const ctx = canvas.getContext('2d', { willReadFrequently: true });
+      ctx.drawImage(img, 0, 0);
+      const data = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+      let brightGreen = 0;
+      let opaqueBlack = 0;
+      let transparent = 0;
+      let nonTransparent = 0;
+      for (let i = 0; i < data.length; i += 4) {
+        const r = data[i], g = data[i + 1], b = data[i + 2], a = data[i + 3];
+        if (a === 0) transparent += 1;
+        if (a > 0) nonTransparent += 1;
+        if (a > 0 && g > 180 && r < 80 && b < 80) brightGreen += 1;
+        if (a > 240 && r < 8 && g < 8 && b < 8) opaqueBlack += 1;
+      }
+      const px = (x, y) => {
+        const i = (y * canvas.width + x) * 4;
+        return data[i + 3] > 0 ? 1 : 0;
+      };
+      const cornerOpaque =
+        px(0, 0) + px(canvas.width - 1, 0) + px(0, canvas.height - 1) + px(canvas.width - 1, canvas.height - 1);
+      const greenLines = brightGreen > Math.max(60, nonTransparent * 0.005) ? 1 : 0;
+      return {
+        width: canvas.width,
+        height: canvas.height,
+        brightGreen,
+        greenLines,
+        opaqueBlack,
+        opaqueBlackRatio: nonTransparent ? opaqueBlack / nonTransparent : 0,
+        alphaTransparentRatio: data.length ? transparent / (data.length / 4) : 0,
+        cornerOpaque,
+      };
+    }
+
+    async function load(path) {
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.onload = () => {
+          let metrics;
+          try {
+            metrics = analyze(img);
+          } catch (error) {
+            metrics = { error: String(error) };
+          }
+          resolve({ path, img, ...metrics });
+        };
+        img.onerror = () => resolve({ path, error: 'load failed' });
+        img.src = urlFor(path);
+      });
+    }
+
+    async function render() {
+      grid.textContent = '';
+      summary.innerHTML = '<span class="pill">Загрузка...</span>';
+      const reports = await Promise.all(assets.map(load));
+      state.reports = reports.map((report) => ({ ...report, status: classify(report) }));
+      const visible = state.reports.filter((report) => {
+        if (state.filter && !report.path.toLowerCase().includes(state.filter)) return false;
+        if (state.suspectsOnly && report.status === 'ok') return false;
+        return true;
+      });
+      const counts = state.reports.reduce((acc, r) => {
+        acc[r.status] = (acc[r.status] || 0) + 1;
+        return acc;
+      }, {});
+      summary.innerHTML = [
+        `<span class="pill">assets: ${state.reports.length}</span>`,
+        `<span class="pill ok">ok: ${counts.ok || 0}</span>`,
+        `<span class="pill">warn: ${counts.warn || 0}</span>`,
+        `<span class="pill">bad: ${counts.bad || 0}</span>`,
+        `<span class="pill">source: ${state.source}</span>`,
+      ].join('');
+      visible.forEach((report) => {
+        const card = document.createElement('article');
+        card.className = `asset ${report.status}`;
+        const image = report.error ? '' : `<img src="${urlFor(report.path)}" alt="">`;
+        const flag = report.status === 'ok' ? '<span class="ok">ok</span>' : `<span class="flag">${report.status}</span>`;
+        card.innerHTML = `
+          <div class="preview">${image || report.error}</div>
+          <div class="meta">
+            <div class="path">${report.path}</div>
+            <div class="stats">
+              <span>status: ${flag}</span>
+              <span>size: ${report.width || '-'}×${report.height || '-'}</span>
+              <span>bright green: ${report.brightGreen ?? '-'}</span>
+              <span>opaque black: ${report.opaqueBlack ?? '-'} (${report.opaqueBlackRatio ? (report.opaqueBlackRatio * 100).toFixed(2) : 0}%)</span>
+              <span>corner opaque: ${report.cornerOpaque ?? '-'}</span>
+            </div>
+          </div>`;
+        grid.append(card);
+      });
+      console.table(state.reports.filter((report) => report.status !== 'ok'));
+    }
+
+    render();
+  </script>
+</body>
+</html>

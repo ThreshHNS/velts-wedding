@@ -19,6 +19,7 @@ const SPEED = levels.speed;
 const COLLECTIBLE_H = levels.collectibleH;
 
 const GAME_ASSETS = '/assets/game';
+const GAME_ASSET_VERSION = '20260620-2';
 const LANDING_URL = '/main/';
 const FONT_PIXEL = '"Press Start 2P", ui-monospace, monospace'; // title, HUD, headers (short, blocky)
 const FONT_BODY = '"Rubik", ui-sans-serif, system-ui, sans-serif'; // sentences (readable)
@@ -78,23 +79,14 @@ type LevelConfig = {
 const LEVELS = levels.levels as LevelConfig[];
 
 const stageMeta = [
-  { title: 'Собраться', subtitle: 'Сборы жениха', objective: 'Собери 3/5 предметов', reveal: ['Дата свадьбы', wedding.date_display] },
+  { title: 'Собраться', objective: 'Собери 3/5 предметов' },
   {
     title: 'Не опоздать',
-    subtitle: 'Тайминг дня',
     objective: 'Сохрани сердечки',
-    reveal: [
-      `${wedding.timeline[0].time} — сбор`,
-      `${wedding.timeline[1].time} — церемония`,
-      `${wedding.timeline[2].time} — банкет`,
-      `${wedding.timeline[3].time} — финал`,
-    ],
   },
   {
     title: 'Добраться до места',
-    subtitle: 'Почти на месте',
     objective: 'Доберись до арки',
-    reveal: [wedding.location.name, `${wedding.location.city}, ${wedding.location.address}`],
   },
 ];
 
@@ -103,12 +95,16 @@ function isCompactViewport() {
 }
 
 /* resolve a sprite key to its file url */
+function gameAsset(path: string) {
+  return `${GAME_ASSETS}${path}?v=${GAME_ASSET_VERSION}`;
+}
+
 function assetUrl(key: string) {
-  if (key === 'paw-icon') return `${GAME_ASSETS}/kaya/paw.png`;
-  if (key.includes('/')) return `${GAME_ASSETS}/v3/${key}.png`; // obstacles/.., decor/.., furniture/.., fx/..
-  if (key.startsWith('collectible-')) return `${GAME_ASSETS}/props/${key}.png`;
-  if (key.startsWith('kaya')) return `${GAME_ASSETS}/kaya/${key}.png`;
-  return `${GAME_ASSETS}/characters/${key}.png`;
+  if (key === 'paw-icon') return gameAsset('/kaya/paw.png');
+  if (key.includes('/')) return gameAsset(`/v3/${key}.png`); // obstacles/.., decor/.., furniture/.., fx/..
+  if (key.startsWith('collectible-')) return gameAsset(`/props/${key}.png`);
+  if (key.startsWith('kaya')) return gameAsset(`/kaya/${key}.png`);
+  return gameAsset(`/characters/${key}.png`);
 }
 
 function bgKeyFor(name: string) {
@@ -388,11 +384,11 @@ class BootScene extends Phaser.Scene {
       );
       if (critical) emitGameEvent('error', { reason: 'asset-load', failed: stillFailed.join(',') });
     });
-    this.load.image('bg-room', `${GAME_ASSETS}/backgrounds/level1_room.webp`);
-    this.load.image('bg-rain', `${GAME_ASSETS}/backgrounds/level2_rain.webp`);
-    this.load.image('bg-embankment', `${GAME_ASSETS}/backgrounds/level3_embankment.webp`);
-    this.load.image('bg-hero', `${GAME_ASSETS}/backgrounds/intro.webp`);
-    this.load.image('bg-finale', `${GAME_ASSETS}/backgrounds/finale.webp`);
+    this.load.image('bg-room', gameAsset('/backgrounds/level1_room.webp'));
+    this.load.image('bg-rain', gameAsset('/backgrounds/level2_rain.webp'));
+    this.load.image('bg-embankment', gameAsset('/backgrounds/level3_embankment.webp'));
+    this.load.image('bg-hero', gameAsset('/backgrounds/intro.webp'));
+    this.load.image('bg-finale', gameAsset('/backgrounds/finale.webp'));
 
     [
       'groom-idle',
@@ -405,11 +401,11 @@ class BootScene extends Phaser.Scene {
       'bride-idle',
       'bride-wave',
       'couple-pose',
-    ].forEach((k) => this.load.image(k, `${GAME_ASSETS}/characters/${k}.png`));
-    this.load.image('sign-katya', `${GAME_ASSETS}/props/sign-katya.png`);
-    this.load.image('paw-icon', `${GAME_ASSETS}/kaya/paw.png`);
+    ].forEach((k) => this.load.image(k, gameAsset(`/characters/${k}.png`)));
+    this.load.image('sign-katya', gameAsset('/props/sign-katya.png'));
+    this.load.image('paw-icon', gameAsset('/kaya/paw.png'));
     // extra Kaya frame for the finale blink animation (tail swish comes later)
-    this.load.image('kaya-sit-blink', `${GAME_ASSETS}/kaya/kaya-sit-blink.png`);
+    this.load.image('kaya-sit-blink', gameAsset('/kaya/kaya-sit-blink.png'));
 
     const keys = new Set<string>();
     LEVELS.forEach((l) => {
@@ -682,8 +678,6 @@ class RunnerScene extends Phaser.Scene {
   private pawText!: Phaser.GameObjects.Text;
   private stageTitle!: Phaser.GameObjects.Text;
   private objectiveText!: Phaser.GameObjects.Text;
-  private revealText!: Phaser.GameObjects.Text;
-  private revealPanel!: Phaser.GameObjects.Graphics;
   private toast!: Phaser.GameObjects.Text;
   private bg!: Phaser.GameObjects.Image;
   private rain?: Phaser.GameObjects.Particles.ParticleEmitter;
@@ -812,19 +806,6 @@ class RunnerScene extends Phaser.Scene {
       .text(GAME_WIDTH / 2, compact ? 122 : 122, '', { fontFamily: FONT_BODY, fontSize: compact ? '13px' : '14px', color: T_CREAM, align: 'center' })
       .setOrigin(0.5)
       .setDepth(20);
-    this.revealPanel = pixelPanel(this, GAME_WIDTH / 2, compact ? 160 : 158, compact ? 304 : 332, compact ? 84 : 96, { depth: 19 }).setVisible(false);
-    this.revealText = this.add
-      .text(GAME_WIDTH / 2, compact ? 160 : 158, '', {
-        fontFamily: FONT_BODY,
-        fontSize: compact ? '12px' : '14px',
-        color: T_CREAM,
-        align: 'center',
-        lineSpacing: compact ? 2 : 3,
-        wordWrap: { width: compact ? 262 : 286, useAdvancedWrap: true },
-      })
-      .setOrigin(0.5)
-      .setDepth(20)
-      .setVisible(false);
     this.toast = this.add
       .text(GAME_WIDTH / 2, 286, '', {
         fontFamily: FONT_BODY,
@@ -841,9 +822,7 @@ class RunnerScene extends Phaser.Scene {
 
     frameRunner(
       this,
-      // includes revealText so the stage-start schedule panel (drawn at revealText.y
-      // via sizeRevealPanel) shifts down with the level title instead of overlapping it
-      [panel, heartIcon, this.heartText, sparkleIcon, this.progressText, pawIcon, this.pawText, pauseBtn, soundBtn, this.stageTitle, this.objectiveText, this.revealText].map(shiftItem),
+      [panel, heartIcon, this.heartText, sparkleIcon, this.progressText, pawIcon, this.pawText, pauseBtn, soundBtn, this.stageTitle, this.objectiveText].map(shiftItem),
       34 - panelH / 2,
       [shiftItem(skipBtn)],
       RUNNER_SKIP_Y + skipH / 2,
@@ -983,26 +962,9 @@ class RunnerScene extends Phaser.Scene {
 
     this.stageTitle.setText(`УРОВЕНЬ ${index + 1}\n${meta.title.toUpperCase()}`);
     this.objectiveText.setText(meta.objective);
-    this.revealText.setText([meta.subtitle, ...meta.reveal].join('\n'));
-    sizeRevealPanel(this.revealPanel, this.revealText);
     this.stageTitle.setAlpha(0);
     this.objectiveText.setAlpha(0);
-    this.revealPanel.setVisible(true).setAlpha(0);
-    this.revealText.setVisible(true).setAlpha(0);
-    this.tweens.add({ targets: [this.stageTitle, this.revealPanel, this.revealText], alpha: 1, duration: 260 });
-    const stageAtReveal = index;
-    this.time.delayedCall(4300, () => {
-      this.tweens.add({
-        targets: [this.revealPanel, this.revealText],
-        alpha: 0,
-        duration: 400,
-        onComplete: () => {
-          this.revealPanel.setVisible(false);
-          this.revealText.setVisible(false);
-          if (this.stageIndex === stageAtReveal) this.tweens.add({ targets: this.objectiveText, alpha: 1, duration: 260 });
-        },
-      });
-    });
+    this.tweens.add({ targets: [this.stageTitle, this.objectiveText], alpha: 1, duration: 260 });
 
     this.kaya?.destroy();
     this.kayaCover?.destroy();
@@ -1673,13 +1635,6 @@ function speechBubble(scene: Phaser.Scene, x: number, y: number, w: number, h: n
   g.fillStyle(C_GOLD, 0.96).fillTriangle(x - 13, b - 4, x + 13, b - 4, x, b + 15);
   g.fillStyle(C_NAVY, 0.96).fillTriangle(x - 9, b - 6, x + 9, b - 6, x, b + 9);
   return g;
-}
-
-function sizeRevealPanel(panel: Phaser.GameObjects.Graphics, text: Phaser.GameObjects.Text) {
-  const w = Math.min(338, Math.max(258, text.width + 32));
-  const h = Math.max(66, text.height + 18);
-  panel.clear();
-  drawPanel(panel, GAME_WIDTH / 2 - w / 2, text.y - h / 2, w, h, 0.96);
 }
 
 function pixelButton(
